@@ -5246,13 +5246,6 @@ function library:CreateConfigTab(window)
     config:button({name = "Rejoin", callback = function()
         game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, lp)
     end})
-    configs:hitpart_picker({name = "Silent Aim Bone", side = "right", flag = "Hello!", default = {"Head"}, type = "R6", callback = function(parts)
-        table.foreach(parts, print)
-    end})
-    configs:hitpart_picker({name = "Silent Aim Bone", side = "right", flag = "Hello!", default = {"Head"}, type = "R15", callback = function(parts)
-        table.foreach(parts, print)
-    end})
-
 
     local configs_section = configs:section({name = "Configuration System", side = "left"})
     library.config_holder = configs_section:dropdown({name = "Configs", items = {}, flag = "config_name_list"})
