@@ -5217,5 +5217,76 @@ end
         end 
     -- 
 -- 
+function library:CreateConfigTab(window)
+    local configs = window:tab({name = "configs"})
+    local config = configs:section({name = "Theming System", side = "right"})
+    config:toggle({name = "Keybind List", flag = "keybind_list", default = false, callback = function(bool)
+        window.toggle_list(bool)
+    end})
+    config:toggle({name = "Player List", flag = "player_list", default = false, callback = function(bool)
+        window.toggle_playerlist(bool)
+    end})
+    config:toggle({name = "Watermark", flag = "watermark", default = false, callback = function(bool)
+        window.toggle_watermark(bool)
+    end})
+    config:keybind({name = "UI Bind", default = Enum.KeyCode.End, callback = window.set_menu_visibility})
+    config:slider({name = "Colorpicker Animation Speed", flag = 'color_picker_anim_speed', min = 0, max = 5, default = 2, interval = 0.01, suffix = ""})
+    config:colorpicker({color = Color3.fromHex("#6464FF"), flag = "accent", callback = function(color)
+        library:update_theme("accent", color)
+    end})
+    config:button({name = "Copy JobId", callback = function()
+        setclipboard(game.JobId)
+    end})
+    config:button({name = "Copy GameID", callback = function()
+        setclipboard(game.GameId)
+    end})
+    config:button({name = "Copy Join Script", callback = function()
+        setclipboard('game:GetService("TeleportService"):TeleportToPlaceInstance(' .. game.PlaceId .. ', "' .. game.JobId .. '", game.Players.LocalPlayer)')
+    end})
+    config:button({name = "Rejoin", callback = function()
+        game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, lp)
+    end})
+    configs:hitpart_picker({name = "Silent Aim Bone", side = "right", flag = "Hello!", default = {"Head"}, type = "R6", callback = function(parts)
+        table.foreach(parts, print)
+    end})
+    configs:hitpart_picker({name = "Silent Aim Bone", side = "right", flag = "Hello!", default = {"Head"}, type = "R15", callback = function(parts)
+        table.foreach(parts, print)
+    end})
+
+
+    local configs_section = configs:section({name = "Configuration System", side = "left"})
+    library.config_holder = configs_section:dropdown({name = "Configs", items = {}, flag = "config_name_list"})
+    configs_section:textbox({flag = "config_name_text_box"})
+    configs_section:button({name = "Create", callback = function()
+        writefile(library.directory .. "/configs/" .. flags["config_name_text_box"] .. ".cfg", library:get_config())
+        library:config_list_update()
+    end})
+    configs_section:button({name = "Delete", callback = function()
+        library:panel({
+            name = "Are you sure you want to delete " .. flags["config_name_list"] .. " ?",
+            options = {"Yes", "No"},
+            callback = function(option)
+                print(option)
+                if option == "Yes" then 
+                    delfile(library.directory .. "/configs/" .. flags["config_name_list"] .. ".cfg")
+                    library:config_list_update()
+                end 
+            end
+        })
+    end})
+    configs_section:button({name = "Load", callback = function()
+        library:load_config(readfile(library.directory .. "/configs/" .. flags["config_name_list"] .. ".cfg"))
+    end})
+    configs_section:button({name = "Save", callback = function()
+        writefile(library.directory .. "/configs/" .. flags["config_name_text_box"] .. ".cfg", library:get_config())
+        library:config_list_update()
+    end})
+    configs_section:button({name = "Unload Config", callback = function()
+        library:load_config(old_config)
+    end})
+    configs_section:button({name = "Unload Menu", callback = function()
+        library:unload()
+    end}) library:config_list_update()
+end
 
 return library
