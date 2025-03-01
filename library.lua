@@ -1,3 +1,5 @@
+local startupArgs = ({...})[1] or {}
+
 local uis = game:GetService("UserInputService") 
 local players = game:GetService("Players") 
 local ws = game:GetService("Workspace")
@@ -55,8 +57,7 @@ end
         sin = 0,
         keybind_path; 
         panel_open = false, 
-
-        directory = "inactivity",
+        directory = startupArgs.cheatname or 'Cheat Name',
         folders = {
             "/fonts",
             "/configs"
@@ -71,12 +72,12 @@ end
         preset = {
             ["outline"] = rgb(32, 32, 38), -- 
             ["inline"] = rgb(60, 55, 75), --
-            ["accent"] = rgb(100, 100, 255), --
+            ["accent"] = startupArgs.color or rgb(100, 100, 255), --
             ["contrast"] = rgb(35, 35, 47),
             ["text"] = rgb(170, 170, 170),
             ["unselected_text"] = rgb(90, 90, 90),
             ["text_outline"] = rgb(0, 0, 0),
-            ["glow"] = rgb(100, 100, 255), 
+            ["glow"] = startupArgs.color or rgb(100, 100, 255), 
         }, 	
 
         utility = {
