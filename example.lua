@@ -3,7 +3,7 @@ local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Reloa
 local flags = library.flags -- access flags from here.
 
 local window = library:window({
-    name = "vaderpaste", 
+    name = "Cheat Name", 
     size = UDim2.fromOffset(500, 650) 
 }) 
 

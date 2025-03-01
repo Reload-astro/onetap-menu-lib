@@ -1,12 +1,12 @@
 <br />
 <div align="center">
-  <h3 align="center">Vaderpaste User Interface</h3>
+  <h3 align="center">Cheat Menu User Interface</h3>
 
   <p align="center">
     A user interface that supports roblox script executor lua. 
     <br />
     <br />
-    <a href="https://raw.githubusercontent.com/i77lhm/vaderpaste/refs/heads/main/example.lua">View Demo</a>
+    <a href="https://raw.githubusercontent.com/Reload-astro/onetap-menu-lib/refs/heads/main/example.lua">View Demo</a>
     &middot;
     <a href="https://discord.gg/HmwRmmSNSb">Report Bug</a>
     &middot;
@@ -14,7 +14,7 @@
   </p>
 
   <div align="center">
-    <img src="https://github.com/i77lhm/vaderpaste/blob/main/assets/vaderpaste_preview.png?raw=true" alt="Vaderpaste Preview" />
+    <img src="https://github.com/Reload-astro/onetap-menu-lib/blob/main/assets/preview.png?raw=true" alt="Preview" />
   </div>
 </div>
 
@@ -31,7 +31,7 @@ This is how you import the library through the repository.
   -- In order to make configs of your own make the inactivity text your own text you want
   -- I may implement theming etc in the future if i come back to this. 
   
-  local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/i77lhm/vaderpaste/refs/heads/main/library.lua"))() 
+  local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Reload-astro/onetap-menu-lib/refs/heads/main/library.lua"))() 
   local flags = library.flags -- access flags from here.
   ```
 
@@ -40,7 +40,7 @@ This is how you import the library through the repository.
 * Window
   ```lua
   local window = library:window({
-    name = "vaderpaste", 
+    name = "Cheat Name", 
     size = UDim2.fromOffset(500, 650) -- x, y in size
   })
   ```
