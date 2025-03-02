@@ -331,10 +331,12 @@ end
         
             local list = {};
         
-            for idx, file in next, listfiles(library.directory .. "/configs") do
-                local name = file:gsub(library.directory .. "/configs\\", ""):gsub(library.directory .. "\\configs\\", ""):gsub(".cfg", "")
-                list[#list + 1] = name;
-            end;
+            for _, v in next, listfiles(library.directory..'/'..library.directory..'/configs') do
+                local filename = v:match("([^\\/]+)%..+$") -- Extract filename without extension
+                if filename and v:sub(-#".cfg") == ".cfg" then
+                    list[#list + 1] = filename
+                end
+            end
             
             library.config_holder:refresh_options(list)
         end 
