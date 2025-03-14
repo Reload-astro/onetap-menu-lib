@@ -1,14 +1,18 @@
 local startupArgs = ({...})[1] or {}
+    
+local GetService = function(service)
+    return cloneref(game:GetService(service))
+end
 
 local uis = game:GetService("UserInputService") 
 local players = game:GetService("Players") 
-local ws = game:GetService("Workspace")
+local ws = GetSergame:GetServicevice("Workspace")
 local http_service = game:GetService("HttpService")
-local gui_service = game:GetService("GuiService")
+local gui_service = cloneref(game:GetService("GuiService"))
 local lighting = game:GetService("Lighting")
 local run = game:GetService("RunService")
 local stats = game:GetService("Stats")
-local coregui = game:GetService("CoreGui")
+local coregui = cloneref(game:GetService("CoreGui"))
 local debris = game:GetService("Debris")
 local tween_service = game:GetService("TweenService")
 local rs = game:GetService("ReplicatedStorage")
@@ -35,7 +39,7 @@ local gui_offset = gui_service:GetGuiInset().Y
 local max = math.max 
 local floor = math.floor 
 local min = math.min 
-local abs = math.abs 
+local abs = math.abs
 
 if getgenv().library then 
     getgenv().library:unload()
@@ -326,54 +330,68 @@ end
             return enum_table
         end
 
-        function library:config_list_update() 
-            if not library.config_holder then return end; 
-        
-            local list = {};
-        
-            for _, v in next, listfiles(library.directory..'/configs') do
-                local name = v:match("([^\\/]+)%.cfg$")
-                if name then
-                    list[#list + 1] = name
-                end
-            end            
-            
-            library.config_holder:refresh_options(list)
-        end 
-
-        function library:get_config()
-            local Config = {}
-        
-            for _, v in flags do
-                if type(v) == "table" and v.key then
-                    Config[_] = {active = v.active, mode = v.mode, key = tostring(v.key)}
-                elseif type(v) == "table" and v["Transparency"] and v["Color"] then
-                    Config[_] = {Transparency = v["Transparency"], Color = v["Color"]:ToHex()}
-                else
-                    Config[_] = v
-                end
-            end 
-            
-            return http_service:JSONEncode(Config)
+        function self:get_config(name)
+            if isfile(library.directory..'/configs/'..name..".cfg") then
+                return readfile(library.directory..'/configs/'..name..".cfg");
+            end
         end
 
-        function library:load_config(config_json) 
-            local config = http_service:JSONDecode(config_json)
-        
-            for _, v in next, config do 
-                local function_set = library.config_flags[_]
-        
-                if function_set then 
-                    if type(v) == "table" and v["Transparency"] and v["Color"] then
-                        function_set(hex(v["Color"]), v["Transparency"])
-                    elseif type(v) == "table" and v["active"] then 
-                        function_set(v)
-                    else 
-                        function_set(v)
+        function library:save_config(name)
+            if not library:get_config(name) then
+                library:notification({ text = 'Error saving config: Config does not exist. ('..tostring(name)..')'})
+                return
+            end
+    
+            local s,e = pcall(function()
+                local cfg = {};
+                for _, v in flags do
+                    if type(v) == "table" and v.key then
+                        cfg[_] = {active = v.active, mode = v.mode, key = tostring(v.key)}
+                    elseif type(v) == "table" and v["Transparency"] and v["Color"] then
+                        cfg[_] = {Transparency = v["Transparency"], Color = v["Color"]:ToHex()}
+                    else
+                        cfg[_] = v
                     end
                 end 
-            end 
-        end 
+                writefile(library.directory..'/configs/'..name..'.cfg', http_service:JSONEncode(cfg));
+            end)
+    
+            if s then
+                library:notification({ text = 'Successfully saved config: '..name})
+            else
+                library:notification({ text = 'Error saving config: '..tostring(e)..'. ('..tostring(name)..')'})
+            end
+        end
+
+        function library:load_config(name) 
+            local cfg = library:get_config(name)
+            if not cfg then
+                library:notification({text = 'Error loading config: Config does not exist. ('..tostring(name)..')'})
+                return
+            end
+    
+            local s,e = pcall(function()
+                for _, v in next, cfg do 
+                    local function_set = library.config_flags[_]
+            
+                    if function_set then 
+                        if type(v) == "table" and v["Transparency"] and v["Color"] then
+                            function_set(hex(v["Color"]), v["Transparency"])
+                        elseif type(v) == "table" and v["active"] then 
+                            function_set(v)
+                        else 
+                            function_set(v)
+                        end
+                    end 
+                end
+            end)
+    
+            if s then
+                library:notification({text = 'Successfully loaded config: '..name})
+            else
+                library:notification({text = 'Error loading config: '..tostring(e)..'. ('..tostring(name)..')'})
+            end
+        end
         
         function library:round(number, float) 
             local multiplier = 1 / (float or 1)
@@ -2228,13 +2246,19 @@ end
                 playerlist.Visible = flags["player_list"] and bool or false 
             end 
 
-            return setmetatable(cfg, library)
+            for k, v in pairs(library) do
+                if type(v) == "function" then
+                    cfg[k] = v
+                end
+            end
+
+            return cfg
         end 
 
         function library:new_keybind(properties)
-            local cfg = {text = properties.name or properties.text or "[mb1] aimbot (hold)"}
+            local cfg = {text = properties.name or properties.text or "[key] name (mode)"}
 
-            local aimbot = library:create("TextLabel", {
+            local keybind = library:create("TextLabel", {
                 Parent = library.keybind_path,
                 Name = "",
                 FontFace = library.font,
@@ -2245,7 +2269,7 @@ end
                 Size = UDim2.new(0, 0, 0, 11),
                 TextColor3 = Color3.fromRGB(170, 170, 170),
                 BorderColor3 = Color3.fromRGB(0, 0, 0),
-                Text = "[mb1] aimbot (hold)",
+                Text = cfg.text,
                 BackgroundTransparency = 1,
                 Position = UDim2.new(0.5, 0, 0, 8),
                 BorderSizePixel = 0,
@@ -2256,20 +2280,20 @@ end
             })
             
             local UIPadding = library:create("UIPadding", {
-                Parent = aimbot,
+                Parent = keybind,
                 Name = "",
                 PaddingTop = UDim.new(0, 6)
             })
 
             function cfg.set_visible(bool) 
-                aimbot.Visible = bool
+                keybind.Visible = bool
             end 
 
             function cfg.change_text(text)
-                aimbot.Text = text
+                keybind.Text = text
             end 
 
-            cfg.change_text(cfg.text)
+            --cfg.change_text(cfg.text)
 
             return cfg 
         end 
@@ -2277,7 +2301,7 @@ end
         function library:notification(properties)
             local cfg = {
                 time = properties.time or 5,
-                text = properties.text or properties.name or "ledger.live is pasted"
+                text = properties.text or properties.name or "Cheat Name"
             }
 
             -- 28 offset
@@ -2645,12 +2669,18 @@ end
 
             TAB_BUTTON.MouseButton1Click:Connect(cfg.open_tab) 
 
-            return setmetatable(cfg, library) 
+            for k, v in pairs(library) do
+                if type(v) == "function" then
+                    cfg[k] = v
+                end
+            end
+
+            return cfg
         end 
 
         function library:section(properties)
             local cfg = {
-                name = properties.name or properties.Name or "Section", 
+                name = properties.name or properties.text or properties.Name or "Section", 
                 side = properties.side or properties.Side or "left" 
             }
 
@@ -2731,12 +2761,18 @@ end
 
             cfg["holder"] = elements
 
-            return setmetatable(cfg, library)
+            for k, v in pairs(library) do
+                if type(v) == "function" then
+                    cfg[k] = v
+                end
+            end
+
+            return cfg
         end
 
         function library:hitpart_picker(properties) 
             local cfg = {
-                name = properties.name or properties.Name or "Hitpart", 
+                name = properties.name or properties.text or properties.Name or "Hitpart", 
                 side = properties.side or properties.Side or "left",
                 flag = properties.flag or "Hitpart", 
                 default = properties.default or {"Head"},
@@ -3126,7 +3162,7 @@ end
         function library:toggle(properties) 
             local cfg = {
                 enabled = properties.enabled or nil,
-                name = properties.name or "Toggle",
+                name = properties.name or properties.text or "Toggle",
                 flag = properties.flag or tostring(math.random(1,9999999)),
                 callback = properties.callback or function() end,
                 default = properties.default or false,
@@ -3269,12 +3305,18 @@ end
             
             config_flags[cfg.flag] = cfg.set
 
-             return setmetatable(cfg, library)  
+            for k, v in pairs(library) do
+                if type(v) == "function" then
+                    cfg[k] = v
+                end
+            end
+
+            return cfg
         end 
         
         function library:slider(properties)
             local cfg = {
-                name = properties.name or nil,
+                name = properties.name or properties.text or nil,
                 suffix = properties.suffix or "",
                 flag = properties.flag or tostring(2^789),
                 callback = properties.callback or function() end, 
@@ -3472,6 +3514,18 @@ end
                 cfg.callback(flags[cfg.flag])
             end
 
+            function cfg.set_visible(state)
+                if type(state) ~= "boolean" then return end
+            
+                if object then
+                    object.Visible = state
+                end
+                if bottom_components then
+                    bottom_components.Visible = state
+                end
+                slider_holder.Visible = state
+            end            
+
             library:connection(uis.InputChanged, function(input)
                 if cfg.dragging and input.UserInputType == Enum.UserInputType.MouseMovement then 
                     local size_x = (input.Position.X - slider.AbsolutePosition.X) / slider.AbsoluteSize.X
@@ -3501,20 +3555,27 @@ end
             end) 
 
             cfg.set(cfg.default)
+            cfg.set_visible(true)
             
             config_flags[cfg.flag] = cfg.set
 
             library.config_flags[cfg.flag] = cfg.set
 
-             return setmetatable(cfg, library)  
+            for k, v in pairs(library) do
+                if type(v) == "function" then
+                    cfg[k] = v
+                end
+            end
+
+            return cfg
         end 
 
         function library:dropdown(properties) 
             local cfg = {
-                name = properties.name or nil,
+                name = properties.name or properties.text or nil,
                 flag = properties.flag or tostring(math.random(1,9999999)),
 
-                items = properties.items or {"1", "2", "3"},
+                items = properties.items or properties.values or {"1", "2", "3"},
                 callback = properties.callback or function() end,
                 multi = properties.multi or false, 
 
@@ -3792,6 +3853,22 @@ end
                 dropdown.Text = ""
             end
 
+            function cfg:add_value(value)
+                if not table.find(cfg.items, value) then
+                    table.insert(cfg.items, value)
+                    cfg:refresh_options(cfg.items)
+                end
+            end
+            
+            function cfg:remove_value(value)
+                local index = table.find(cfg.items, value)
+                if index then
+                    table.remove(cfg.items, index)
+                    cfg:refresh_options(cfg.items)
+                end
+            end
+            
+
             dropdown.MouseButton1Click:Connect(function()
                 cfg.open = not cfg.open 
 
@@ -3804,12 +3881,18 @@ end
 
             library.config_flags[cfg.flag] = cfg.set
 
-             return setmetatable(cfg, library)
+            for k, v in pairs(library) do
+                if type(v) == "function" then
+                    cfg[k] = v
+                end
+            end
+
+            return cfg
         end 
 
         function library:colorpicker(properties)            
             local cfg = {
-                name = properties.name or nil, 
+                name = properties.name or properties.text or nil, 
                 flag = properties.flag or tostring(2^789),
                 color = properties.color or Color3.new(1, 1, 1), -- Default to white color if not provided
                 alpha = properties.alpha or 1,
@@ -4517,28 +4600,33 @@ end
                 end     
             end)    
             
-            return setmetatable(cfg, library)  
+            for k, v in pairs(library) do
+                if type(v) == "function" then
+                    cfg[k] = v
+                end
+            end
+
+            return cfg
         end     
 
         function library:keybind(properties)
             local cfg = {
                 flag = properties.flag or tostring(2^math.random(1,30)*3),
-                keybind_name = properties.keybind_name or nil, 
                 callback = properties.callback or function() end,
                 open = false,
                 binding = nil, 
-                name = properties.name or nil, 
-
+                name = properties.name or properties.text or properties.text or nil, 
                 key = properties.key or nil, 
                 mode = properties.mode or "toggle",
                 active = properties.default or false, 
-
                 hold_instances = {},
             }
 
-            flags[cfg.flag] = {} 
-
-            local key = library:new_keybind({})
+            flags[cfg.flag] = {}
+            local key = nil
+            if cfg.name ~= 'UI Bind' then
+                key = library:new_keybind({})
+            end
 
             -- Instances
                 local right_components; 
@@ -4640,13 +4728,13 @@ end
                     SortOrder = Enum.SortOrder.LayoutOrder
                 })
                 
-                local press = library:create("TextButton", {
+                local toggle = library:create("TextButton", {
                     Parent = options,
                     Name = "",
                     FontFace = library.font,
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(56, 56, 56),
-                    Text = "press",
+                    Text = "toggle",
                     Size = UDim2.new(1, 0, 0, 12),
                     BackgroundTransparency = 1,
                     TextXAlignment = Enum.TextXAlignment.Left,
@@ -4657,7 +4745,7 @@ end
                 })
                 
                 local UIPadding = library:create("UIPadding", {
-                    Parent = press,
+                    Parent = toggle,
                     Name = "",
                     PaddingBottom = UDim.new(0, 1),
                     PaddingLeft = UDim.new(0, 5)
@@ -4827,8 +4915,8 @@ end
                     cfg.key_name = __text
                 end 
 
-                if cfg.keybind_name then 
-                    key.change_text(keybind.Text ..  " " .. cfg.keybind_name .. " (" .. flags[cfg.flag].mode  .. ")")
+                if cfg.name and cfg.name ~= 'UI Bind' then
+                    key.change_text(keybind.Text ..  " " .. cfg.name .. " (" .. flags[cfg.flag].mode  .. ")")
                     key.set_visible(cfg.active)
                 end 
             end
@@ -4839,7 +4927,7 @@ end
                 if selected then 
                     selected.BackgroundTransparency = 1
                 end 
-                selected = "hold"
+                selected = hold
                 hold.BackgroundTransparency = 0 
 
                 cfg.set_mode("hold") 
@@ -4847,12 +4935,12 @@ end
                 cfg.open = false 
             end) 
 
-            press.MouseButton1Click:Connect(function()
+            toggle.MouseButton1Click:Connect(function()
                 if selected then 
                     selected.BackgroundTransparency = 1
                 end 
-                selected = "press"
-                press.BackgroundTransparency = 0 
+                selected = toggle
+                toggle.BackgroundTransparency = 0 
 
                 cfg.set_mode("toggle") 
                 cfg.set_visible(false)
@@ -4863,7 +4951,7 @@ end
                 if selected then 
                     selected.BackgroundTransparency = 1
                 end 
-                selected = "always"
+                selected = always
                 
                 always.BackgroundTransparency = 0 
                 cfg.set_mode("always") 
@@ -4920,8 +5008,14 @@ end
     
             library.config_flags[cfg.flag] = cfg.set
 
-             return setmetatable(cfg, library) 
-        end 
+            for k, v in pairs(library) do
+                if type(v) == "function" then
+                    cfg[k] = v
+                end
+            end
+
+            return cfg
+        end
 
         function library:button(properties)
             local cfg = {
@@ -4956,8 +5050,14 @@ end
             button.MouseButton1Click:Connect(function()
                 cfg.callback() 
             end)
-            
-            return setmetatable(cfg, library)  
+
+            for k, v in pairs(library) do
+                if type(v) == "function" then
+                    cfg[k] = v
+                end
+            end
+
+            return cfg
         end 
 
         function library:textbox(properties)
@@ -4965,7 +5065,7 @@ end
                 placeholder = properties.placeholder or properties.placeholdertext or properties.holder or properties.holdertext or "type here...",
                 default = properties.default,
                 clear_on_focus = properties.clearonfocus or false,
-                flag = properties.flag or "SET ME NIGGA",
+                flag = properties.flag or "SET ME GANG",
                 callback = properties.callback or function() end 
             }
 
@@ -5014,7 +5114,13 @@ end
 
             library.config_flags[cfg.flag] = cfg.set
 
-             return setmetatable(cfg, library)  
+            for k, v in pairs(library) do
+                if type(v) == "function" then
+                    cfg[k] = v
+                end
+            end
+
+            return cfg
         end 
 
         function library:panel(properties)
@@ -5160,32 +5266,6 @@ end
                 Name = ""
             })
 
-            -- local textbox_inline = library:create("Frame", {
-            --     Parent = Frame,
-            --     Name = "",
-            --     Position = UDim2.new(0, -15, 0, 2),
-            --     BorderColor3 = Color3.fromRGB(19, 19, 19),
-            --     Size = UDim2.new(0, 130, 0, 16),
-            --     BorderSizePixel = 0,
-            --     BackgroundColor3 = Color3.fromRGB(8, 8, 8)
-            -- })
-
-            -- local textbox = library:create("TextBox", {
-            --     Parent = textbox_inline,
-            --     Name = "",
-            --     FontFace = library.font,
-            --     TextColor3 = Color3.fromRGB(170, 170, 170),
-            --     BorderColor3 = Color3.fromRGB(56, 56, 56),
-            --     Text = "",
-            --     TextStrokeTransparency = 0.5,
-            --     Size = UDim2.new(1, -4, 1, -4),
-            --     PlaceholderColor3 = Color3.fromRGB(90, 90, 90),
-            --     Position = UDim2.new(0, 2, 0, 2),
-            --     PlaceholderText = "name",
-            --     TextSize = 12,
-            --     BackgroundColor3 = Color3.fromRGB(38, 38, 38)
-            -- })
-
             for _, v in next, cfg.options do 
                 local button_inline = library:create("Frame", {
                     Parent = Frame,
@@ -5223,66 +5303,116 @@ end
 function library:CreateConfigTab(window)
     local configs = window:tab({name = "configs"})
     local config = configs:section({name = "Theming System", side = "right"})
+
+    local function refreshConfigs()
+        if not library.config_holder then return end; 
+        
+        local list = {};
+    
+        for _, v in next, listfiles(library.directory..'/configs') do
+            local name = v:match("([^\\/]+)%..+$")
+            if name and v:sub(-#".cfg") == ".cfg" then
+                list[#list + 1] = name
+            end
+        end            
+        
+        library.config_holder:refresh_options(list)
+    end
+    
     config:toggle({name = "Keybind List", flag = "keybind_list", default = false, callback = function(bool)
         window.toggle_list(bool)
     end})
-    config:toggle({name = "Player List", flag = "player_list", default = false, callback = function(bool)
-        window.toggle_playerlist(bool)
-    end})
+    
+    -- config:toggle({name = "Player List", flag = "player_list", default = false, callback = function(bool)
+        window.toggle_playerlist(false)
+    -- end})
+    
     config:toggle({name = "Watermark", flag = "watermark", default = false, callback = function(bool)
         window.toggle_watermark(bool)
     end})
-    config:keybind({name = "UI Bind", default = Enum.KeyCode.End, callback = window.set_menu_visibility})
+    
+    config:keybind({name = "UI Bind", key = Enum.KeyCode.RightShift, callback = window.set_menu_visibility})
+    
     config:slider({name = "Colorpicker Animation Speed", flag = 'color_picker_anim_speed', min = 0, max = 5, default = 2, interval = 0.01, suffix = ""})
-    config:colorpicker({color = Color3.fromHex("#6464FF"), flag = "accent", callback = function(color)
+    
+    config:colorpicker({color = startupArgs.color, flag = "accent", callback = function(color)
         library:update_theme("accent", color)
     end})
-    config:button({name = "Copy JobId", callback = function()
-        setclipboard(game.JobId)
-    end})
-    config:button({name = "Copy GameID", callback = function()
-        setclipboard(game.GameId)
-    end})
-    config:button({name = "Copy Join Script", callback = function()
-        setclipboard('game:GetService("TeleportService"):TeleportToPlaceInstance(' .. game.PlaceId .. ', "' .. game.JobId .. '", game.Players.LocalPlayer)')
-    end})
-    config:button({name = "Rejoin", callback = function()
-        game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, lp)
-    end})
 
-    local configs_section = configs:section({name = "Configuration System", side = "left"})
-    library.config_holder = configs_section:dropdown({name = "Configs", items = {}, flag = "config_name_list"})
-    configs_section:textbox({flag = "config_name_text_box"})
-    configs_section:button({name = "Create", callback = function()
-        writefile(library.directory .. "/configs/" .. flags["config_name_text_box"] .. ".cfg", library:get_config())
-        library:config_list_update()
-    end})
-    configs_section:button({name = "Delete", callback = function()
+    config:button({name = 'Rejoin Server', callback = function()
         library:panel({
-            name = "Are you sure you want to delete " .. flags["config_name_list"] .. " ?",
+            name = "Are you sure you want to rejoin the game server ?",
             options = {"Yes", "No"},
             callback = function(option)
-                print(option)
                 if option == "Yes" then 
-                    delfile(library.directory .. "/configs/" .. flags["config_name_list"] .. ".cfg")
-                    library:config_list_update()
+                    players.LocalPlayer:Kick('['..startupArgs.cheatname..']'..' Rejoining Server')
+                    GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId);
                 end 
             end
         })
     end})
+
+    config:button({name = 'Rejoin Game', callback = function()
+        library:panel({
+            name = "Are you sure you want to rejoin the same server ?",
+            options = {"Yes", "No"},
+            callback = function(option)
+                if option == "Yes" then 
+                    players.LocalPlayer:Kick('['..startupArgs.cheatname..']'..' Rejoining Game')
+                    GetService("TeleportService"):Teleport(game.PlaceId);
+                end 
+            end
+        })
+    end})
+
+    config:button({name = 'Remove Voice Chat Ban', callback = function()
+        GetService("VoiceChatService"):joinVoice()
+    end})
+
+    local configs_section = configs:section({name = "Configuration System", side = "left"})
+
+    library.config_holder = configs_section:dropdown({name = "Configs", items = {}, flag = "config_name_list"})
+
+    configs_section:textbox({flag = "config_name_text_box"})
+
     configs_section:button({name = "Load", callback = function()
-        library:load_config(readfile(library.directory .. "/configs/" .. flags["config_name_list"] .. ".cfg"))
+        library:load_config(flags["config_name_list"])
     end})
+
     configs_section:button({name = "Save", callback = function()
-        writefile(library.directory .. "/configs/" .. flags["config_name_text_box"] .. ".cfg", library:get_config())
-        library:config_list_update()
+        library:save_config(flags["config_name_list"])
     end})
-    configs_section:button({name = "Unload Config", callback = function()
-        library:load_config(old_config)
+
+    configs_section:button({name = "Create", callback = function()
+        if library:get_config(flags["config_name_text_box"]) then
+            library:notifications({text = 'Config \''..flags["config_name_text_box"]..'\' already exists.'})
+            return
+        end
+
+        writefile(library.directory.. '/configs/'..flags["config_name_text_box"].. '.cfg', http_service:JSONEncode({}));
+        refreshConfigs()
     end})
+
+    configs_section:button({text = 'Delete', callback = function()
+        library:panel({
+            name = "Are you sure you want to delete the config".. flags["config_name_list"] .." ?",
+            options = {"Yes", "No"},
+            callback = function(option)
+                if option == "Yes" then 
+                    if library:get_config(flags["config_name_list"]) then
+                        delfile(library.directory.. '/configs/'..flags["config_name_list"].. '.cfg');
+                        refreshConfigs()
+                    end
+                end 
+            end
+        })
+    end})
+
     configs_section:button({name = "Unload Menu", callback = function()
         library:unload()
-    end}) library:config_list_update()
+    end})
+
+    refreshConfigs()
 end
 
 return library
