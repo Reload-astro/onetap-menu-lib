@@ -367,7 +367,7 @@ end
             end
     
             local s,e = pcall(function()
-                for _, v in next, cfg do 
+                for _, v in next, http_service:JSONDecode(cfg) do 
                     local function_set = library.config_flags[_]
             
                     if function_set then 
