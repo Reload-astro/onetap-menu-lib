@@ -1,8 +1,4 @@
 local startupArgs = ({...})[1] or {}
-    
-local GetService = function(service)
-    return cloneref(game:GetService(service))
-end
 
 local uis = game:GetService("UserInputService") 
 local players = game:GetService("Players") 
