@@ -6,7 +6,7 @@ end
 
 local uis = game:GetService("UserInputService") 
 local players = game:GetService("Players") 
-local ws = GetSergame:GetServicevice("Workspace")
+local ws = game:GetService("Workspace")
 local http_service = game:GetService("HttpService")
 local gui_service = cloneref(game:GetService("GuiService"))
 local lighting = game:GetService("Lighting")
