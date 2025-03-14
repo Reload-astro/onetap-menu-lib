@@ -3,7 +3,7 @@ local startupArgs = ({...})[1] or {}
 local uis = game:GetService("UserInputService") 
 local players = game:GetService("Players") 
 local ws = game:GetService("Workspace")
-local http_service = game:GetService("HttpService")
+local http_service = cloneref(game:GetService("HttpService"))
 local gui_service = cloneref(game:GetService("GuiService"))
 local lighting = game:GetService("Lighting")
 local run = game:GetService("RunService")
@@ -213,6 +213,15 @@ end
 
             getgenv().library = nil
         end
+
+        function library:writefile(path, data)
+            if isfile(path) then
+                delfile(path)
+            end
+
+            appendfile(path, data)
+        end
+        
 
         function library:convert_string_rgb(str)
             local values = {}
@@ -5385,7 +5394,7 @@ function library:CreateConfigTab(window)
             return
         end
 
-        writefile(library.directory.. '/configs/'..flags["config_name_text_box"].. '.cfg', http_service:JSONEncode({}));
+        library:writefile(library.directory.. '/configs/'..flags["config_name_text_box"].. '.cfg', http_service:JSONEncode({}));
         refreshConfigs()
     end})
 
