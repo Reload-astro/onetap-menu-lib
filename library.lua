@@ -326,7 +326,7 @@ end
             return enum_table
         end
 
-        function self:get_config(name)
+        function library:get_config(name)
             if isfile(library.directory..'/configs/'..name..".cfg") then
                 return readfile(library.directory..'/configs/'..name..".cfg");
             end
