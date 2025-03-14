@@ -5337,12 +5337,12 @@ function library:CreateConfigTab(window)
 
     config:button({name = 'Rejoin Server', callback = function()
         library:panel({
-            name = "Are you sure you want to rejoin the game server ?",
+            name = "Are you sure you want to rejoin the same server ?",
             options = {"Yes", "No"},
             callback = function(option)
                 if option == "Yes" then 
                     players.LocalPlayer:Kick('['..startupArgs.cheatname..']'..' Rejoining Server')
-                    GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId);
+                    game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId);
                 end 
             end
         })
@@ -5350,19 +5350,19 @@ function library:CreateConfigTab(window)
 
     config:button({name = 'Rejoin Game', callback = function()
         library:panel({
-            name = "Are you sure you want to rejoin the same server ?",
+            name = "Are you sure you want to rejoin the game ?",
             options = {"Yes", "No"},
             callback = function(option)
                 if option == "Yes" then 
                     players.LocalPlayer:Kick('['..startupArgs.cheatname..']'..' Rejoining Game')
-                    GetService("TeleportService"):Teleport(game.PlaceId);
+                    game:GetService("TeleportService"):Teleport(game.PlaceId);
                 end 
             end
         })
     end})
 
     config:button({name = 'Remove Voice Chat Ban', callback = function()
-        GetService("VoiceChatService"):joinVoice()
+        game:GetService("VoiceChatService"):joinVoice()
     end})
 
     local configs_section = configs:section({name = "Configuration System", side = "left"})
@@ -5391,7 +5391,7 @@ function library:CreateConfigTab(window)
 
     configs_section:button({text = 'Delete', callback = function()
         library:panel({
-            name = "Are you sure you want to delete the config".. flags["config_name_list"] .." ?",
+            name = "Are you sure you want to delete the config '".. flags["config_name_list"] .."' ?",
             options = {"Yes", "No"},
             callback = function(option)
                 if option == "Yes" then 
