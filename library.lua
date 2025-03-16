@@ -3,7 +3,7 @@ local startupArgs = ({...})[1] or {}
 local uis = game:GetService("UserInputService") 
 local players = game:GetService("Players") 
 local ws = game:GetService("Workspace")
-local http_service = cloneref(game:GetService("HttpService"))
+local http_service = game:GetService("HttpService")
 local gui_service = cloneref(game:GetService("GuiService"))
 local lighting = game:GetService("Lighting")
 local run = game:GetService("RunService")
@@ -37,33 +37,34 @@ local floor = math.floor
 local min = math.min 
 local abs = math.abs
 
-if getgenv().library then 
-    getgenv().library:unload()
+if getgenv().init then 
+    getgenv().init:unload()
 end 
 
 -- library init
-    getgenv().library = {
+    local library = {
         flags = {},
         config_flags = {},
         connections = {},   
         notifications = {}, 
         instances = {},
         main_frame = {}, 
-        config_holder,
-        current_tab, 
-        current_element_open, 
-        dock_button_holder,  
-        gui, 
+        config_holder = nil,
+        current_tab = nil, 
+        current_element_open = nil, 
+        dock_button_holder = nil,  
+        gui = nil, 
         sin = 0,
-        keybind_path; 
+        keybind_path = nil; 
         panel_open = false, 
-        directory = startupArgs.cheatname or 'Cheat Name',
-        folders = {
-            "/fonts",
-            "/configs"
-        },
-        font, 
+        color = startupArgs.color or Color3.fromRGB(79, 155, 255),
+        cheatname = startupArgs.cheatname or 'Title';
+        gamename = startupArgs.gamename or 'Unknown';
+        fileext = startupArgs.fileext or '.cfg';
+        font = nil, 
     }
+
+    getgenv().init = library
 
     local flags = library.flags
     local config_flags = library.config_flags
@@ -72,12 +73,12 @@ end
         preset = {
             ["outline"] = rgb(32, 32, 38), -- 
             ["inline"] = rgb(60, 55, 75), --
-            ["accent"] = startupArgs.color or rgb(100, 100, 255), --
+            ["accent"] = library.color or rgb(100, 100, 255), --
             ["contrast"] = rgb(35, 35, 47),
             ["text"] = rgb(170, 170, 170),
             ["unselected_text"] = rgb(90, 90, 90),
             ["text_outline"] = rgb(0, 0, 0),
-            ["glow"] = startupArgs.color or rgb(100, 100, 255), 
+            ["glow"] = library.color or rgb(100, 100, 255), 
         }, 	
 
         utility = {
@@ -167,12 +168,13 @@ end
         
     library.__index = library
 
-    for _, path in next, library.folders do 
-        makefolder(library.directory .. path)
-    end 
+    makefolder(library.cheatname)
+    makefolder(library.cheatname..'/assets')
+    makefolder(library.cheatname..'/'..self.gamename)
+    makefolder(library.cheatname..'/'..self.gamename..'/configs');
 
-    if not isfile(library.directory .. "/fonts/main.ttf") then 
-        writefile(library.directory .. "/fonts/main.ttf", game:HttpGet("https://raw.githubusercontent.com/Reload-astro/onetap-menu-lib/refs/heads/main/font.ttf"))
+    if not isfile(library.cheatname..'/assets' .. "/fonts/main.ttf") then 
+        writefile(library.cheatname..'/assets' .. "/fonts/main.ttf", game:HttpGet("https://raw.githubusercontent.com/Reload-astro/onetap-menu-lib/refs/heads/main/font.ttf"))
     end 
     
     local tahoma = {
@@ -182,16 +184,16 @@ end
                 name = "Regular",
                 weight = 400,
                 style = "normal",
-                assetId = getcustomasset(library.directory .. "/fonts/main.ttf")
+                assetId = getcustomasset(library.cheatname..'/assets' .. "/fonts/main.ttf")
             }
         }
     }
     
-    if not isfile(library.directory .. "/fonts/main_encoded.ttf") then 
-        writefile(library.directory .. "/fonts/main_encoded.ttf", http_service:JSONEncode(tahoma))
+    if not isfile(library.cheatname..'/assets' .. "/fonts/main_encoded.ttf") then 
+        writefile(library.cheatname..'/assets' .. "/fonts/main_encoded.ttf", http_service:JSONEncode(tahoma))
     end 
     
-    library.font = Font.new(getcustomasset(library.directory .. "/fonts/main_encoded.ttf"), Enum.FontWeight.Regular)
+    library.font = Font.new(getcustomasset(library.cheatname..'/assets' .. "/fonts/main_encoded.ttf"), Enum.FontWeight.Regular)
 -- 
 
 -- functions 
@@ -211,17 +213,8 @@ end
                 item:Destroy()
             end 
 
-            getgenv().library = nil
+            getgenv().init = nil
         end
-
-        function library:writefile(path, data)
-            if isfile(path) then
-                delfile(path)
-            end
-
-            appendfile(path, data)
-        end
-        
 
         function library:convert_string_rgb(str)
             local values = {}
@@ -336,8 +329,8 @@ end
         end
 
         function library:get_config(name)
-            if isfile(library.directory..'/configs/'..name..".cfg") then
-                return readfile(library.directory..'/configs/'..name..".cfg");
+            if isfile(library.cheatname..'/'..library.gamename..'/configs/'..name..library.fileext) then
+                return readfile(library.cheatname..'/'..library.gamename..'/configs/'..name..library.fileext);
             end
         end
 
@@ -358,7 +351,7 @@ end
                         cfg[_] = v
                     end
                 end 
-                writefile(library.directory..'/configs/'..name..'.cfg', http_service:JSONEncode(cfg));
+                writefile(library.cheatname..'/'..library.gamename..'/configs/'..name..library.fileext, http_service:JSONEncode(cfg))
             end)
     
             if s then
@@ -5314,9 +5307,9 @@ function library:CreateConfigTab(window)
         
         local list = {};
     
-        for _, v in next, listfiles(library.directory..'/configs') do
+        for _, v in next, listfiles(library.cheatname..'/'..library.gamename..'/configs') do
             local name = v:match("([^\\/]+)%..+$")
-            if name and v:sub(-#".cfg") == ".cfg" then
+            if name and v:sub(-#library.fileext) == library.fileext then
                 list[#list + 1] = name
             end
         end            
@@ -5340,7 +5333,7 @@ function library:CreateConfigTab(window)
     
     config:slider({name = "Colorpicker Animation Speed", flag = 'color_picker_anim_speed', min = 0, max = 5, default = 2, interval = 0.01, suffix = ""})
     
-    config:colorpicker({color = startupArgs.color, flag = "accent", callback = function(color)
+    config:colorpicker({color = library.color, flag = "accent", callback = function(color)
         library:update_theme("accent", color)
     end})
 
@@ -5350,7 +5343,7 @@ function library:CreateConfigTab(window)
             options = {"Yes", "No"},
             callback = function(option)
                 if option == "Yes" then 
-                    players.LocalPlayer:Kick('['..startupArgs.cheatname..']'..' Rejoining Server')
+                    players.LocalPlayer:Kick('['..library.cheatname..']'..' Rejoining Server')
                     game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId);
                 end 
             end
@@ -5363,7 +5356,7 @@ function library:CreateConfigTab(window)
             options = {"Yes", "No"},
             callback = function(option)
                 if option == "Yes" then 
-                    players.LocalPlayer:Kick('['..startupArgs.cheatname..']'..' Rejoining Game')
+                    players.LocalPlayer:Kick('['..library.cheatname..']'..' Rejoining Game')
                     game:GetService("TeleportService"):Teleport(game.PlaceId);
                 end 
             end
@@ -5376,9 +5369,8 @@ function library:CreateConfigTab(window)
 
     local configs_section = configs:section({name = "Configuration System", side = "left"})
 
-    library.config_holder = configs_section:dropdown({name = "Configs", items = {}, flag = "config_name_list"})
-
     configs_section:textbox({flag = "config_name_text_box"})
+    library.config_holder = configs_section:dropdown({name = "Configs", items = {}, flag = "config_name_list"})
 
     configs_section:button({name = "Load", callback = function()
         library:load_config(flags["config_name_list"])
@@ -5394,7 +5386,7 @@ function library:CreateConfigTab(window)
             return
         end
 
-        library:writefile(library.directory.. '/configs/'..flags["config_name_text_box"].. '.cfg', http_service:JSONEncode({}));
+        writefile(library.cheatname..'/'..library.gamename..'/configs/'..flags["config_name_text_box"].. library.fileext, http_service:JSONEncode({}))
         refreshConfigs()
     end})
 
@@ -5405,7 +5397,7 @@ function library:CreateConfigTab(window)
             callback = function(option)
                 if option == "Yes" then 
                     if library:get_config(flags["config_name_list"]) then
-                        delfile(library.directory.. '/configs/'..flags["config_name_list"].. '.cfg');
+                        delfile(library.cheatname..'/'..library.gamename..'/configs/'..flags["config_name_list"].. library.fileext)
                         refreshConfigs()
                     end
                 end 
