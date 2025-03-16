@@ -73,12 +73,12 @@ end
         preset = {
             ["outline"] = rgb(32, 32, 38), -- 
             ["inline"] = rgb(60, 55, 75), --
-            ["accent"] = library.color or rgb(100, 100, 255), --
+            ["accent"] = library.color or rgb(255, 141, 34), --
             ["contrast"] = rgb(35, 35, 47),
             ["text"] = rgb(170, 170, 170),
             ["unselected_text"] = rgb(90, 90, 90),
             ["text_outline"] = rgb(0, 0, 0),
-            ["glow"] = library.color or rgb(100, 100, 255), 
+            ["glow"] = library.color or rgb(255, 141, 34), 
         }, 	
 
         utility = {
