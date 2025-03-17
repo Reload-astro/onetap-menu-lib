@@ -4558,7 +4558,7 @@ end
 
             rainbow.MouseButton1Down:Connect(function()
                 selected.BackgroundTransparency = 1; 
-                selected = "rainbow" 
+                selected = rainbow
                 rainbow.BackgroundTransparency = 0 
 
                 flags[cfg.flag]["animation"] = "rainbow"
@@ -4567,7 +4567,7 @@ end
 
             fade_alpha.MouseButton1Down:Connect(function()
                 selected.BackgroundTransparency = 1; 
-                selected = "fade_alpha" 
+                selected = fade_alpha
                 fade_alpha.BackgroundTransparency = 0 
 
                 flags[cfg.flag]["animation"] = "fade_alpha"
@@ -4576,7 +4576,7 @@ end
 
             fade.MouseButton1Down:Connect(function()
                 selected.BackgroundTransparency = 1; 
-                selected = "fade" 
+                selected = fade
                 fade.BackgroundTransparency = 0 
 
                 flags[cfg.flag]["animation"] = "fade"
@@ -4585,7 +4585,7 @@ end
 
             normal.MouseButton1Down:Connect(function()
                 selected.BackgroundTransparency = 1; 
-                selected = "normal" 
+                selected = normal
                 normal.BackgroundTransparency = 0 
 
                 flags[cfg.flag]["animation"] = "normal"
