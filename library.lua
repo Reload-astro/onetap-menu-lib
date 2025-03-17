@@ -445,7 +445,6 @@ end
     end)
 
     library:connection(players.LocalPlayer.CharacterAdded, function()
-        task.wait(0.5)
         if library.gui and library.gui.Parent == rs then
             library.gui.Parent = playergui
         end
