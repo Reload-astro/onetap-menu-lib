@@ -58,9 +58,10 @@ end
         keybind_path = nil; 
         panel_open = false, 
         color = startupArgs.color or Color3.fromRGB(79, 155, 255),
-        cheatname = startupArgs.cheatname or 'Title';
-        gamename = startupArgs.gamename or 'Unknown';
-        fileext = startupArgs.fileext or '.cfg';
+        cheatname = startupArgs.cheatname or 'Title',
+        gamename = startupArgs.gamename or 'Unknown',
+        fileext = startupArgs.fileext or '.cfg',
+        folder = {},
         font = nil, 
     }
 
@@ -165,6 +166,12 @@ end
     }
         
     library.__index = library
+
+    if playergui and not playergui:FindFirstChild("Menu") then
+        library.folder = Instance.new("Folder")
+        library.folder.Name = "Menu"
+        library.folder.Parent = playergui
+    end
 
     makefolder(library.cheatname)
     makefolder(library.cheatname..'/assets')
@@ -446,7 +453,7 @@ end
 
     library:connection(players.LocalPlayer.CharacterAdded, function()
         if library.gui and library.gui.Parent == rs then
-            library.gui.Parent = playergui
+            library.gui.Parent = library.folder
         end
     end)
     
@@ -5450,6 +5457,6 @@ function library:CreateConfigTab(window)
     refreshConfigs()
 end
 
-library.gui.Parent = playergui
+library.gui.Parent = library.folder
 getgenv().init = library
 return library
