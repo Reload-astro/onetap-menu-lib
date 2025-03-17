@@ -7,10 +7,6 @@
     <br />
     <br />
     <a href="https://raw.githubusercontent.com/Reload-astro/onetap-menu-lib/refs/heads/main/example.lua">View Demo</a>
-    &middot;
-    <a href="https://discord.gg/HmwRmmSNSb">Report Bug</a>
-    &middot;
-    <a href="https://discord.gg/HmwRmmSNSb">Request Feature</a>
   </p>
 
   <div align="center">
@@ -20,7 +16,7 @@
 
 ## Getting Started
 
-This will go through how to use the library in your executor.
+This will go through how to use the library in your executor should work on all.
 
 ### Prerequisites
 
@@ -31,7 +27,11 @@ This is how you import the library through the repository.
   -- In order to make configs of your own make the inactivity text your own text you want
   -- I may implement theming etc in the future if i come back to this. 
   
-  local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Reload-astro/onetap-menu-lib/refs/heads/main/library.lua"))() 
+  local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Reload-astro/onetap-menu-lib/refs/heads/main/library.lua"))({
+    cheatname = 'Cheat Name',
+    gamename = 'Game Name',
+    color = Color3.fromRGB(255, 141, 34)
+  })
   local flags = library.flags -- access flags from here.
   ```
 
