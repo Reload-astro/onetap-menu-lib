@@ -2257,21 +2257,22 @@ end
             end 
 
             task.spawn(function()
-                while cfg.keybind_active do
-                    local foundVisible = false
-                    for _, v in pairs(library.keybind_path:GetDescendants()) do
-                        if v:IsA("TextLabel") then
-                            foundVisible = true
-                            break
+                while true do
+                    if cfg.keybind_active then
+                        local foundVisible = false
+                        for _, v in pairs(library.keybind_path:GetDescendants()) do
+                            if v:IsA("TextLabel") and v.Visible then
+                                foundVisible = true
+                                break
+                            end
                         end
-                    end
-            
-                    if foundVisible then
-                        old_kblist.Visible = true
-                    else
-                        old_kblist.Visible = false
-                    end
-            
+                
+                        if foundVisible then
+                            old_kblist.Visible = true
+                        else
+                            old_kblist.Visible = false
+                        end 
+                    end            
                     task.wait(0.1)
                 end
             end)
