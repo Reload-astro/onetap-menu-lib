@@ -168,8 +168,8 @@ end
 
     makefolder(library.cheatname)
     makefolder(library.cheatname..'/assets')
-    makefolder(library.cheatname..'/'..self.gamename)
-    makefolder(library.cheatname..'/'..self.gamename..'/configs');
+    makefolder(library.cheatname..'/'..library.gamename)
+    makefolder(library.cheatname..'/'..library.gamename..'/configs');
 
     if not isfile(library.cheatname..'/assets' .. "/fonts/main.ttf") then 
         writefile(library.cheatname..'/assets' .. "/fonts/main.ttf", game:HttpGet("https://raw.githubusercontent.com/Reload-astro/onetap-menu-lib/refs/heads/main/font.ttf"))
