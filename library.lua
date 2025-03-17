@@ -478,7 +478,7 @@ end
                     Active = true, 
                     Draggable = true, 
                     BorderColor3 = Color3.fromRGB(0, 0, 0),
-                    Size = UDim2.new(0, ((#animated_text / 1.5) * 5) + 13, 0, 40),
+                    Size = UDim2.new(0, ((#animated_text / 1.3) * 5) + 13, 0, 40),
                     BackgroundColor3 = Color3.fromRGB(40, 40, 40)
                 })
                 
@@ -2273,7 +2273,7 @@ end
                             old_kblist.Visible = false
                         end 
                     end            
-                    task.wait(0.1)
+                    task.wait()
                 end
             end)
 
