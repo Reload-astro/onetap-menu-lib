@@ -167,7 +167,7 @@ end
         
     library.__index = library
 
-    if playergui:FindFirstChild("Menu") then
+    if not playergui:FindFirstChild("Menu") then
         library.folder = Instance.new("Folder")
         library.folder.Name = "Menu"
         library.folder.Parent = playergui
