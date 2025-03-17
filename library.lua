@@ -167,10 +167,12 @@ end
         
     library.__index = library
 
-    if playergui and not playergui:FindFirstChild("Menu") then
+    if playergui:FindFirstChild("Menu") then
         library.folder = Instance.new("Folder")
         library.folder.Name = "Menu"
         library.folder.Parent = playergui
+    else
+        library.folder = playergui:WaitForChild("Menu")
     end
 
     makefolder(library.cheatname)
