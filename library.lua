@@ -8,7 +8,7 @@ local gui_service = cloneref(game:GetService("GuiService"))
 local lighting = game:GetService("Lighting")
 local run = game:GetService("RunService")
 local stats = game:GetService("Stats")
-local coregui = cloneref(game:GetService("CoreGui"))
+local playergui = cloneref(game:GetService("PlayerGui"))
 local debris = game:GetService("Debris")
 local tween_service = game:GetService("TweenService")
 local rs = game:GetService("ReplicatedStorage")
@@ -432,7 +432,7 @@ end
 
     library.gui = library:create("ScreenGui", {
         Enabled = true,
-        Parent = coregui,
+        Parent = playergui,
         Name = "",
         DisplayOrder = 2, 
         ZIndexBehavior = 1, 
@@ -3551,7 +3551,6 @@ end
             end) 
 
             cfg.set(cfg.default)
-            cfg.set_visible(true)
             
             config_flags[cfg.flag] = cfg.set
 
@@ -5375,16 +5374,24 @@ function library:CreateConfigTab(window)
     end})
 
     configs_section:button({name = "Save", callback = function()
-        library:save_config(flags["config_name_list"])
+        library:panel({
+            name = "Are you sure you want to save the config '".. flags["config_name_list"] .."' ?",
+            options = {"Yes", "No"},
+            callback = function(option)
+                if option == "Yes" then 
+                    library:save_config(flags["config_name_list"])
+                end 
+            end
+        })
     end})
 
     configs_section:button({name = "Create", callback = function()
         if library:get_config(flags["config_name_text_box"]) then
-            library:notifications({text = 'Config \''..flags["config_name_text_box"]..'\' already exists.'})
+            library:notification({text = 'Config \''..flags["config_name_text_box"]..'\' already exists.'});
             return
         end
-
-        writefile(library.cheatname..'/'..library.gamename..'/configs/'..flags["config_name_text_box"].. library.fileext, http_service:JSONEncode({}))
+        
+        writefile(library.cheatname..'/'..library.gamename..'/configs/'..flags["config_name_text_box"].. library.fileext, http_service:JSONEncode({}));
         refreshConfigs()
     end})
 
