@@ -432,7 +432,7 @@ end
 
     library.gui = library:create("ScreenGui", {
         Enabled = true,
-        Parent = rs,
+        Parent = playergui,
         Name = "Menu :3",
         DisplayOrder = 2, 
         ZIndexBehavior = 1, 
@@ -5449,6 +5449,5 @@ function library:CreateConfigTab(window)
     refreshConfigs()
 end
 
-library.gui.Parent = playergui
 getgenv().init = library
 return library
