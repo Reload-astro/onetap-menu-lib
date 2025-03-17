@@ -4,11 +4,11 @@ local uis = game:GetService("UserInputService")
 local players = game:GetService("Players") 
 local ws = game:GetService("Workspace")
 local http_service = game:GetService("HttpService")
-local gui_service = cloneref(game:GetService("GuiService"))
+local gui_service = game:GetService("GuiService")
 local lighting = game:GetService("Lighting")
 local run = game:GetService("RunService")
 local stats = game:GetService("Stats")
-local playergui = cloneref(game:GetService("PlayerGui"))
+local coregui = game:GetService("CoreGui")
 local debris = game:GetService("Debris")
 local tween_service = game:GetService("TweenService")
 local rs = game:GetService("ReplicatedStorage")
@@ -61,7 +61,6 @@ end
         cheatname = startupArgs.cheatname or 'Title';
         gamename = startupArgs.gamename or 'Unknown';
         fileext = startupArgs.fileext or '.cfg';
-        font = nil, 
     }
 
     local flags = library.flags
@@ -170,28 +169,6 @@ end
     makefolder(library.cheatname..'/assets')
     makefolder(library.cheatname..'/'..library.gamename)
     makefolder(library.cheatname..'/'..library.gamename..'/configs');
-
-    if not isfile(library.cheatname..'/assets' .. "/fonts/main.ttf") then 
-        writefile(library.cheatname..'/assets' .. "/fonts/main.ttf", game:HttpGet("https://raw.githubusercontent.com/Reload-astro/onetap-menu-lib/refs/heads/main/font.ttf"))
-    end 
-    
-    local tahoma = {
-        name = "SmallestPixel7",
-        faces = {
-            {
-                name = "Regular",
-                weight = 400,
-                style = "normal",
-                assetId = getcustomasset(library.cheatname..'/assets' .. "/fonts/main.ttf")
-            }
-        }
-    }
-    
-    if not isfile(library.cheatname..'/assets' .. "/fonts/main_encoded.ttf") then 
-        writefile(library.cheatname..'/assets' .. "/fonts/main_encoded.ttf", http_service:JSONEncode(tahoma))
-    end 
-    
-    library.font = Font.new(getcustomasset(library.cheatname..'/assets' .. "/fonts/main_encoded.ttf"), Enum.FontWeight.Regular)
 -- 
 
 -- functions 
@@ -432,7 +409,7 @@ end
 
     library.gui = library:create("ScreenGui", {
         Enabled = true,
-        Parent = playergui,
+        Parent = coregui,
         Name = "",
         DisplayOrder = 2, 
         ZIndexBehavior = 1, 
@@ -532,7 +509,7 @@ end
                 local name = library:create("TextLabel", {
                     Parent = tabs,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(0, 0, 0),
                     Text = "ledger.live",
@@ -688,7 +665,7 @@ end
                 local name = library:create("TextLabel", {
                     Parent = inline1,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(0, 0, 0),
                     Text = cfg.name,
@@ -774,7 +751,7 @@ end
                 local name = library:create("TextLabel", {
                     Parent = esp_preview,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(0, 0, 0),
                     Text = "esp preview",
@@ -1172,7 +1149,7 @@ end
                 local weapon = library:create("TextLabel", {
                     Parent = bottom_holder,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(255, 255, 255),
                     Text = "double barrel",
                     TextStrokeTransparency = 0,
@@ -1267,7 +1244,7 @@ end
                     Parent = armor_slider,
                     Name = "",
                     ZIndex = 99,
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(0, 13, 255),
                     Text = "100",
                     Position = UDim2.new(0, -2, 0.75, -2),
@@ -1315,7 +1292,7 @@ end
                     Parent = health_slider,
                     Name = "",
                     Visible = false,
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(0, 255, 0),
                     Text = "100",
                     ZIndex = 99,
@@ -1403,7 +1380,7 @@ end
                     RichText = true,
                     TextColor3 = Color3.fromRGB(255, 255, 255),
                     Text = "hello there",
-                    FontFace = library.font,
+                    
                     AnchorPoint = Vector2.new(0, 1),
                     AutomaticSize = Enum.AutomaticSize.Y,
                     BackgroundTransparency = 1,
@@ -1492,7 +1469,7 @@ end
                 local name = library:create("TextLabel", {
                     Parent = playerlist,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(0, 0, 0),
                     Text = "playerlist",
@@ -1713,7 +1690,7 @@ end
                 local display_name_label = library:create("TextLabel", {
                     Parent = ScrollingFrame,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(180, 180, 180),
                     BorderColor3 = Color3.fromRGB(0, 0, 0),
                     Text = "Display Name: ...",
@@ -1734,7 +1711,7 @@ end
                 local name_label = library:create("TextLabel", {
                     Parent = ScrollingFrame,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(180, 180, 180),
                     BorderColor3 = Color3.fromRGB(0, 0, 0),
                     Text = "Name: ...",
@@ -1755,7 +1732,7 @@ end
                 local priority_label = library:create("TextLabel", {
                     Parent = ScrollingFrame,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(180, 180, 180),
                     BorderColor3 = Color3.fromRGB(0, 0, 0),
                     Text = "Priority: Friendly",
@@ -1798,7 +1775,7 @@ end
                 local button = library:create("TextButton", {
                     Parent = button_inline,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(56, 56, 56),
                     Text = "Neutral",
@@ -1827,7 +1804,7 @@ end
                 local button = library:create("TextButton", {
                     Parent = button_inline,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(56, 56, 56),
                     Text = "Friendly",
@@ -1856,7 +1833,7 @@ end
                 local button = library:create("TextButton", {
                     Parent = button_inline,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(56, 56, 56),
                     Text = "Enemy",
@@ -1927,7 +1904,7 @@ end
                     local TextButton = library:create("TextButton", {
                         Parent = __ScrollingFrame,
                         Name = "",
-                        FontFace = library.font,
+                        
                         TextColor3 = Color3.fromRGB(180, 180, 180),
                         BorderColor3 = Color3.fromRGB(0, 0, 0),
                         Text = "",
@@ -1945,7 +1922,7 @@ end
                     local TextLabel = library:create("TextLabel", {
                         Parent = TextButton,
                         Name = "",
-                        FontFace = library.font,
+                        
                         TextColor3 = Color3.fromRGB(180, 180, 180),
                         BorderColor3 = Color3.fromRGB(0, 0, 0),
                         Text = player.Name,
@@ -1966,7 +1943,7 @@ end
                     local TextLabel = library:create("TextLabel", {
                         Parent = TextButton,
                         Name = "",
-                        FontFace = library.font,
+                        
                         TextColor3 = Color3.fromRGB(180, 180, 180),
                         BorderColor3 = Color3.fromRGB(0, 0, 0),
                         Text = player.Team and tostring(player.Team) or "None",
@@ -1996,7 +1973,7 @@ end
                     local TextLabel = library:create("TextLabel", {
                         Parent = TextButton,
                         Name = "",
-                        FontFace = library.font,
+                        
                         TextColor3 = Color3.fromRGB(180, 180, 180),
                         BorderColor3 = Color3.fromRGB(0, 0, 0),
                         Text = "Neutral",
@@ -2134,7 +2111,7 @@ end
                 local name = library:create("TextLabel", {
                     Parent = inline1,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(0, 0, 0),
                     Text = "keybinds",
@@ -2257,7 +2234,7 @@ end
             local keybind = library:create("TextLabel", {
                 Parent = library.keybind_path,
                 Name = "",
-                FontFace = library.font,
+                
                 LineHeight = 1.2000000476837158,
                 TextStrokeTransparency = 0.5,
                 AnchorPoint = Vector2.new(0.5, 0),
@@ -2362,7 +2339,7 @@ end
                 local name = library:create("TextLabel", {
                     Parent = tab_inline,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(0, 0, 0),
                     Text = cfg.text,
@@ -2463,7 +2440,7 @@ end
                 local TAB_BUTTON = library:create("TextButton", {
                     Parent = self.tab_holder,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = themes.preset.unselected_text,
                     BorderColor3 = Color3.fromRGB(0, 0, 0),
                     Text = cfg.name,
@@ -2706,7 +2683,7 @@ end
                 local name = library:create("TextLabel", {
                     Parent = section_inline,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(0, 0, 0),
                     Text = cfg.name,
@@ -3090,7 +3067,7 @@ end
             local name = library:create("TextLabel", {
                 Parent = hitpart_inline,
                 Name = "",
-                FontFace = library.font,
+                
                 TextColor3 = Color3.fromRGB(170, 170, 170),
                 BorderColor3 = Color3.fromRGB(0, 0, 0),
                 Text = cfg.name,
@@ -3169,7 +3146,7 @@ end
                 local object = library:create("TextButton", {
                     Parent = self.holder,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(0, 0, 0),
                     Text = cfg.name,
@@ -3333,7 +3310,7 @@ end
                 object = library:create("TextLabel", {
                     Parent = self.holder,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(0, 0, 0),
                     Text = cfg.name,
@@ -3425,7 +3402,7 @@ end
                 BackgroundTransparency = 1,
                 Position = UDim2.new(1, 0, 0, 1),
                 BorderSizePixel = 0,
-                FontFace = library.font,
+                
                 TextSize = 12,
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255)
             })
@@ -3460,7 +3437,7 @@ end
                 BackgroundTransparency = 1,
                 Position = UDim2.new(1, 5, 0, -1),
                 Size = UDim2.new(0, 8, 0, 8),
-                FontFace = library.font,
+                
                 TextSize = 8,
                 BackgroundColor3 = Color3.fromRGB(38, 38, 38)
             })
@@ -3476,7 +3453,7 @@ end
                 BackgroundTransparency = 1,
                 Position = UDim2.new(0, -15, 0, -1),
                 Size = UDim2.new(0, 8, 0, 8),
-                FontFace = library.font,
+                
                 TextSize = 12,
                 BackgroundColor3 = Color3.fromRGB(38, 38, 38)
             })
@@ -3588,7 +3565,7 @@ end
                 object = library:create("TextLabel", {
                     Parent = self.holder,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(0, 0, 0),
                     Text = cfg.name,
@@ -3640,7 +3617,7 @@ end
                 local dropdown = library:create("TextButton", {
                     Parent = dropdown_inline,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(56, 56, 56),
                     Text = "option 1, option 3",
@@ -3661,7 +3638,7 @@ end
                 local icon = library:create("TextLabel", {
                     Parent = dropdown,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(0, 0, 0),
                     Text = "+",
@@ -3732,7 +3709,7 @@ end
                 -- local op3 = library:create("TextButton", {
                 --     Parent = options,
                 --     Name = "",
-                --     FontFace = library.font,
+                --     
                 --     TextColor3 = Color3.fromRGB(170, 170, 170),
                 --     BorderColor3 = Color3.fromRGB(56, 56, 56),
                 --     Text = "option 3",
@@ -3803,7 +3780,7 @@ end
                     local op3 = library:create("TextButton", {
                         Parent = options,
                         Name = "",
-                        FontFace = library.font,
+                        
                         TextColor3 = Color3.fromRGB(170, 170, 170),
                         BorderColor3 = Color3.fromRGB(56, 56, 56),
                         Text = v,
@@ -3913,7 +3890,7 @@ end
                     local object = library:create("TextLabel", {
                         Parent = self.holder,
                         Name = "",
-                        FontFace = library.font,
+                        
                         TextColor3 = Color3.fromRGB(170, 170, 170),
                         BorderColor3 = Color3.fromRGB(0, 0, 0),
                         Text = cfg.name,
@@ -4180,7 +4157,7 @@ end
                 local __input = library:create("TextBox", {
                     Parent = input_inline,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(56, 56, 56),
                     Text = "204, 41, 41, 0.5",
@@ -4291,7 +4268,7 @@ end
                 local normal = library:create("TextButton", {
                     Parent = options,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(56, 56, 56),
                     Text = "normal",
@@ -4314,7 +4291,7 @@ end
                 local rainbow = library:create("TextButton", {
                     Parent = options,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(56, 56, 56),
                     Text = "rainbow",
@@ -4338,7 +4315,7 @@ end
                 local fade = library:create("TextButton", {
                     Parent = options,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(56, 56, 56),
                     Text = "fade",
@@ -4368,7 +4345,7 @@ end
                 local fade_alpha = library:create("TextButton", {
                     Parent = options,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(56, 56, 56),
                     Text = "fade alpha",
@@ -4629,7 +4606,7 @@ end
                     local object = library:create("TextLabel", {
                         Parent = self.holder,
                         Name = "",
-                        FontFace = library.font,
+                        
                         TextColor3 = Color3.fromRGB(170, 170, 170),
                         BorderColor3 = Color3.fromRGB(0, 0, 0),
                         Text = cfg.name,
@@ -4666,7 +4643,7 @@ end
                 local keybind = library:create("TextButton", {
                     Parent = cfg.name and right_components or self.right_holder,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(0, 0, 0),
                     Text = "ERROR",
@@ -4726,7 +4703,7 @@ end
                 local toggle = library:create("TextButton", {
                     Parent = options,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(56, 56, 56),
                     Text = "toggle",
@@ -4749,7 +4726,7 @@ end
                 local hold = library:create("TextButton", {
                     Parent = options,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(56, 56, 56),
                     Text = "hold",
@@ -4773,7 +4750,7 @@ end
                 local always = library:create("TextButton", {
                     Parent = options,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(56, 56, 56),
                     Text = "always",
@@ -5031,7 +5008,7 @@ end
             local button = library:create("TextButton", {
                 Parent = button_inline,
                 Name = "",
-                FontFace = library.font,
+                
                 TextColor3 = Color3.fromRGB(170, 170, 170),
                 BorderColor3 = Color3.fromRGB(56, 56, 56),
                 Text = cfg.name,
@@ -5077,7 +5054,7 @@ end
             local textbox = library:create("TextBox", {
                 Parent = textbox_inline,
                 Name = "",
-                FontFace = library.font,
+                
                 TextColor3 = Color3.fromRGB(170, 170, 170),
                 BorderColor3 = Color3.fromRGB(56, 56, 56),
                 Text = "",
@@ -5208,7 +5185,7 @@ end
             local aimbot = library:create("TextLabel", {
                 Parent = tabs,
                 Name = "",
-                FontFace = library.font,
+                
                 LineHeight = 1.2000000476837158,
                 TextStrokeTransparency = 0.5,
                 AnchorPoint = Vector2.new(0.5, 0),
@@ -5275,7 +5252,7 @@ end
                 local button = library:create("TextButton", {
                     Parent = button_inline,
                     Name = "",
-                    FontFace = library.font,
+                    
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(56, 56, 56),
                     Text = v,
