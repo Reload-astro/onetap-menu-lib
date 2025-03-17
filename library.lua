@@ -3353,7 +3353,7 @@ end
 
                 min = properties.min or properties.minimum or 0,
                 max = properties.max or properties.maximum or 100,
-                intervals = properties.interval or properties.decimal or 1,
+                intervals = properties.interval or properties.decimal or properties.increment or 1,
                 default = properties.default or 10,
 
                 dragging = false,
