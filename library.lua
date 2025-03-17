@@ -8,7 +8,7 @@ local gui_service = game:GetService("GuiService")
 local lighting = game:GetService("Lighting")
 local run = game:GetService("RunService")
 local stats = game:GetService("Stats")
-local coregui = game:GetService("CoreGui")
+local playergui = players.LocalPlayer:WaitForChild("PlayerGui")
 local debris = game:GetService("Debris")
 local tween_service = game:GetService("TweenService")
 local rs = game:GetService("ReplicatedStorage")
@@ -409,7 +409,7 @@ end
 
     library.gui = library:create("ScreenGui", {
         Enabled = true,
-        Parent = coregui,
+        Parent = playergui,
         Name = "",
         DisplayOrder = 2, 
         ZIndexBehavior = 1, 
