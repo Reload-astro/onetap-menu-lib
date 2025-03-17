@@ -478,7 +478,7 @@ end
                     Active = true, 
                     Draggable = true, 
                     BorderColor3 = Color3.fromRGB(0, 0, 0),
-                    Size = UDim2.new(0, ((#animated_text / 1.3) * 5) + 13, 0, 40),
+                    Size = UDim2.new(0, ((#animated_text / 1.1) * 5) + 13, 0, 40),
                     BackgroundColor3 = Color3.fromRGB(40, 40, 40)
                 })
                 
@@ -3345,6 +3345,7 @@ end
         
         function library:slider(properties)
             local cfg = {
+                object = nil,
                 name = properties.name or properties.text or nil,
                 suffix = properties.suffix or "",
                 flag = properties.flag or tostring(2^789),
@@ -3363,7 +3364,7 @@ end
 
             local bottom_components; 
             if cfg.name then 
-                object = library:create("TextLabel", {
+                cfg.object = library:create("TextLabel", {
                     Parent = self.holder,
                     Name = "",
                     FontFace = library.font,
@@ -3382,7 +3383,7 @@ end
                 })
                 
                 bottom_components = library:create("Frame", {
-                    Parent = object,
+                    Parent = cfg.object,
                     Name = "",
                     Visible = true,
                     Position = UDim2.new(0, 0, 0, 13),
@@ -3546,8 +3547,8 @@ end
             function cfg.set_visible(state)
                 if type(state) ~= "boolean" then return end
             
-                if object then
-                    object.Visible = state
+                if cfg.object then
+                    cfg.object.Visible = state
                 end
                 if bottom_components then
                     bottom_components.Visible = state
