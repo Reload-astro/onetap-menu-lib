@@ -171,8 +171,6 @@ end
         library.folder = Instance.new("Folder")
         library.folder.Name = "Menu"
         library.folder.Parent = playergui
-    else
-        library.folder = playergui:WaitForChild("Menu")
     end
 
     makefolder(library.cheatname)
@@ -211,6 +209,7 @@ end
 
         function library:unload()
             library.gui:Destroy() 
+            library.folder:Destroy()
 
             for _, connection in library.connections do 
                 connection:Disconnect() 
