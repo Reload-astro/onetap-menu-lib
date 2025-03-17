@@ -167,12 +167,6 @@ end
         
     library.__index = library
 
-    if playergui and not playergui:FindFirstChild("Menu") then
-        library.folder = Instance.new("Folder")
-        library.folder.Name = "Menu"
-        library.folder.Parent = playergui
-    end
-
     makefolder(library.cheatname)
     makefolder(library.cheatname..'/assets')
     makefolder(library.cheatname..'/'..library.gamename)
@@ -453,6 +447,9 @@ end
 
     library:connection(players.LocalPlayer.CharacterAdded, function()
         if library.gui and library.gui.Parent == rs then
+            library.folder = Instance.new("Folder")
+            library.folder.Name = "Menu"
+            library.folder.Parent = playergui
             library.gui.Parent = library.folder
         end
     end)
