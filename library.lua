@@ -432,7 +432,7 @@ end
 
     library.gui = library:create("ScreenGui", {
         Enabled = true,
-        Parent = playergui,
+        Parent = rs,
         Name = "Menu :3",
         DisplayOrder = 2, 
         ZIndexBehavior = 1, 
@@ -478,7 +478,7 @@ end
                     Active = true, 
                     Draggable = true, 
                     BorderColor3 = Color3.fromRGB(0, 0, 0),
-                    Size = UDim2.new(0, ((#animated_text / 2) * 5) + 13, 0, 40),
+                    Size = UDim2.new(0, ((#animated_text / 1.5) * 5) + 13, 0, 40),
                     BackgroundColor3 = Color3.fromRGB(40, 40, 40)
                 })
                 
@@ -5449,5 +5449,6 @@ function library:CreateConfigTab(window)
     refreshConfigs()
 end
 
+library.gui.Parent = playergui
 getgenv().init = library
 return library
