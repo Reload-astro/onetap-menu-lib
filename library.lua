@@ -8,7 +8,7 @@ local gui_service = cloneref(game:GetService("GuiService"))
 local lighting = game:GetService("Lighting")
 local run = game:GetService("RunService")
 local stats = game:GetService("Stats")
-local coregui = gethui()
+local playergui = players.LocalPlayer:FindFirstChild('PlayerGui')
 local debris = game:GetService("Debris")
 local tween_service = game:GetService("TweenService")
 local rs = game:GetService("ReplicatedStorage")
@@ -432,11 +432,24 @@ end
 
     library.gui = library:create("ScreenGui", {
         Enabled = true,
-        Parent = coregui,
-        Name = "",
+        Parent = playergui,
+        Name = "Menu :3",
         DisplayOrder = 2, 
         ZIndexBehavior = 1, 
     })
+
+    library:connection(players.LocalPlayer.CharacterRemoving, function()
+        if library.gui then
+            library.gui.Parent = rs
+        end
+    end)
+
+    library:connection(players.LocalPlayer.CharacterAdded, function()
+        task.wait(0.5)
+        if library.gui and library.gui.Parent == rs then
+            library.gui.Parent = playergui
+        end
+    end)
     
     -- library functions 
         function library:window(properties) 
