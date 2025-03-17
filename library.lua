@@ -432,11 +432,19 @@ end
 
     library.gui = library:create("ScreenGui", {
         Enabled = true,
-        Parent = playergui,
-        Name = "",
+        Parent = rs,
+        Name = "Menu :3",
         DisplayOrder = 2, 
         ZIndexBehavior = 1, 
     })
+
+    players.LocalPlayer.CharacterAdded:Connect(function()
+        task.wait(0.5)
+        if playergui and rs:FindFirstChild('Menu :3') then
+            local newGui = rs:WaitForChild('Menu :3'):Clone()
+            newGui.Parent = playergui
+        end
+    end)
     
     -- library functions 
         function library:window(properties) 
