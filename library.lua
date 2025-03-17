@@ -64,8 +64,6 @@ end
         font = nil, 
     }
 
-    getgenv().init = library
-
     local flags = library.flags
     local config_flags = library.config_flags
     
@@ -5412,4 +5410,5 @@ function library:CreateConfigTab(window)
     refreshConfigs()
 end
 
+getgenv().init = library
 return library
