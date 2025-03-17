@@ -432,7 +432,7 @@ end
 
     library.gui = library:create("ScreenGui", {
         Enabled = true,
-        Parent = playergui,
+        Parent = rs,
         Name = "Menu :3",
         DisplayOrder = 2, 
         ZIndexBehavior = 1, 
@@ -453,11 +453,12 @@ end
     -- library functions 
         function library:window(properties) 
             local cfg = {
+                keybind_active = false,
                 name = properties.Name or properties.name or properties.Title or properties.title or "ledger.live", 
                 size = properties.Size or properties.size or dim2(0, 500, 0, 650)
             }
             
-            local animated_text = library:animation( cfg.name .. " | developer | uid 1") 
+            local animated_text = library:animation( cfg.name .. " | Beta") 
 
             -- watermark 
                 local __holder = library:create("Frame", {
@@ -2237,7 +2238,8 @@ end
             -- 
 
             function cfg.toggle_list(bool) 
-                old_kblist.Visible = bool 
+                old_kblist.Visible = bool
+                cfg.keybind_active = bool
             end
 
             function cfg.toggle_playerlist(bool) 
@@ -2253,6 +2255,26 @@ end
 
                 playerlist.Visible = flags["player_list"] and bool or false 
             end 
+
+            task.spawn(function()
+                while cfg.keybind_active do
+                    local foundVisible = false
+                    for _, v in pairs(library.keybind_path:GetDescendants()) do
+                        if v:IsA("TextLabel") then
+                            foundVisible = true
+                            break
+                        end
+                    end
+            
+                    if foundVisible then
+                        old_kblist.Visible = true
+                    else
+                        old_kblist.Visible = false
+                    end
+            
+                    task.wait(0.1)
+                end
+            end)
 
             for k, v in pairs(library) do
                 if type(v) == "function" then
@@ -2300,8 +2322,6 @@ end
             function cfg.change_text(text)
                 keybind.Text = text
             end 
-
-            --cfg.change_text(cfg.text)
 
             return cfg 
         end 
@@ -4625,8 +4645,7 @@ end
                 name = properties.name or properties.text or properties.text or nil, 
                 key = properties.key or nil, 
                 mode = properties.mode or "toggle",
-                active = properties.default or false, 
-                hold_instances = {},
+                active = properties.default or false
             }
 
             flags[cfg.flag] = {}
@@ -4988,8 +5007,8 @@ end
                 if not game_event then 
                     if input.KeyCode == cfg.key then 
                         if cfg.mode == "toggle" then 
-                            toggled = not toggled
-                            cfg.set(toggled)
+                            cfg.active = not cfg.active
+                            cfg.set(cfg.active)
                         elseif cfg.mode == "hold" then 
                             cfg.set(true)
                         end
@@ -5429,5 +5448,6 @@ function library:CreateConfigTab(window)
     refreshConfigs()
 end
 
+library.gui.Parent = playergui
 getgenv().init = library
 return library
