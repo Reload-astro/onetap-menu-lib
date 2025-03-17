@@ -445,6 +445,8 @@ end
             newGui.Parent = playergui
         end
     end)
+
+    rs:WaitForChild('Menu :3'):Clone().Parent = playergui
     
     -- library functions 
         function library:window(properties) 
