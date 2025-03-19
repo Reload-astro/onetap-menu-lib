@@ -3357,7 +3357,6 @@ end
         
         function library:slider(properties)
             local cfg = {
-                object = nil,
                 name = properties.name or properties.text or nil,
                 suffix = properties.suffix or "",
                 flag = properties.flag or tostring(2^789),
@@ -3375,8 +3374,9 @@ end
             } 
 
             local bottom_components; 
+            local object;
             if cfg.name then 
-                cfg.object = library:create("TextLabel", {
+                object = library:create("TextLabel", {
                     Parent = self.holder,
                     Name = "",
                     FontFace = library.font,
@@ -3395,7 +3395,7 @@ end
                 })
                 
                 bottom_components = library:create("Frame", {
-                    Parent = cfg.object,
+                    Parent = object,
                     Name = "",
                     Visible = true,
                     Position = UDim2.new(0, 0, 0, 13),
@@ -3558,21 +3558,19 @@ end
 
             function cfg.set_visible(state)
                 if type(state) ~= "boolean" then return end
-                print("Setting visibility to:", state)  -- Debugging print
             
-                if cfg.object and cfg.object.Parent then
-                    print("cfg.object found, setting visibility")
-                    cfg.object.Visible = state
+                print('Called Function')
+
+                if object then
+                    object.Visible = state
                 end
-                if bottom_components and bottom_components.Parent then
-                    print("bottom_components found, setting visibility")
+
+                if bottom_components then
                     bottom_components.Visible = state
                 end
-                if slider_holder and slider_holder.Parent then
-                    print("slider_holder found, setting visibility")
-                    slider_holder.Visible = state
-                end
-            end                     
+
+                slider_holder.Visible = state
+            end            
 
             library:connection(uis.InputChanged, function(input)
                 if cfg.dragging and input.UserInputType == Enum.UserInputType.MouseMovement then 
