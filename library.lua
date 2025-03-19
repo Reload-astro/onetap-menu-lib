@@ -72,12 +72,12 @@ end
         preset = {
             ["outline"] = rgb(32, 32, 38), -- 
             ["inline"] = rgb(60, 55, 75), --
-            ["accent"] = library.color or rgb(255, 141, 34), --
+            ["accent"] = library.color or rgb(181, 0, 41), --
             ["contrast"] = rgb(35, 35, 47),
             ["text"] = rgb(170, 170, 170),
             ["unselected_text"] = rgb(90, 90, 90),
             ["text_outline"] = rgb(0, 0, 0),
-            ["glow"] = library.color or rgb(255, 141, 34), 
+            ["glow"] = library.color or rgb(181, 0, 41), 
         }, 	
 
         utility = {
@@ -175,11 +175,12 @@ end
 
     makefolder(library.cheatname)
     makefolder(library.cheatname..'/assets')
+    makefolder(library.cheatname..'/assets/fonts')
     makefolder(library.cheatname..'/'..library.gamename)
     makefolder(library.cheatname..'/'..library.gamename..'/configs');
 
-    if not isfile(library.cheatname..'/assets' .. "/fonts/main.ttf") then 
-        writefile(library.cheatname..'/assets' .. "/fonts/main.ttf", game:HttpGet("https://raw.githubusercontent.com/Reload-astro/onetap-menu-lib/refs/heads/main/font.ttf"))
+    if not isfile(library.cheatname.."/assets/fonts/main.ttf") then 
+        writefile(library.cheatname.."/assets/fonts/main.ttf", game:HttpGet("https://raw.githubusercontent.com/Reload-astro/onetap-menu-lib/refs/heads/main/font.ttf"))
     end 
     
     local tahoma = {
@@ -189,16 +190,16 @@ end
                 name = "Regular",
                 weight = 400,
                 style = "normal",
-                assetId = getcustomasset(library.cheatname..'/assets' .. "/fonts/main.ttf")
+                assetId = getcustomasset(library.cheatname.."/assets/fonts/main.ttf")
             }
         }
     }
     
-    if not isfile(library.cheatname..'/assets' .. "/fonts/main_encoded.ttf") then 
-        writefile(library.cheatname..'/assets' .. "/fonts/main_encoded.ttf", http_service:JSONEncode(tahoma))
+    if not isfile(library.cheatname.."/assets/fonts/main_encoded.ttf") then 
+        writefile(library.cheatname.."/assets/fonts/main_encoded.ttf", http_service:JSONEncode(tahoma))
     end 
     
-    library.font = Font.new(getcustomasset(library.cheatname..'/assets' .. "/fonts/main_encoded.ttf"), Enum.FontWeight.Regular)
+    library.font = Font.new(getcustomasset(library.cheatname.."/assets/fonts/main_encoded.ttf"), Enum.FontWeight.Regular)
 -- 
 
 -- functions 
@@ -3557,15 +3558,21 @@ end
 
             function cfg.set_visible(state)
                 if type(state) ~= "boolean" then return end
+                print("Setting visibility to:", state)  -- Debugging print
             
-                if cfg.object then
+                if cfg.object and cfg.object.Parent then
+                    print("cfg.object found, setting visibility")
                     cfg.object.Visible = state
                 end
-                if bottom_components then
+                if bottom_components and bottom_components.Parent then
+                    print("bottom_components found, setting visibility")
                     bottom_components.Visible = state
                 end
-                slider_holder.Visible = state
-            end            
+                if slider_holder and slider_holder.Parent then
+                    print("slider_holder found, setting visibility")
+                    slider_holder.Visible = state
+                end
+            end                     
 
             library:connection(uis.InputChanged, function(input)
                 if cfg.dragging and input.UserInputType == Enum.UserInputType.MouseMovement then 
