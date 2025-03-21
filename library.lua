@@ -560,7 +560,7 @@ end
                     FontFace = library.font,
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(0, 0, 0),
-                    Text = "ledger.live",
+                    Text = "Cheat Menu",
                     TextStrokeTransparency = 0.5,
                     Size = UDim2.new(0, 0, 1, 0),
                     Position = UDim2.new(0, 8, 0, 0),
@@ -580,7 +580,7 @@ end
                         ColorSequenceKeypoint.new(0.01, themes.preset.accent),
                         ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 255))
                     }
-                })                
+                })
                 
                 local UIPadding = library:create("UIPadding", {
                     Parent = tabs,
@@ -3557,20 +3557,34 @@ end
             end
 
             function cfg.set_visible(state)
-                if type(state) ~= "boolean" then return end
+                if type(state) ~= "boolean" then 
+                    print("Invalid state:", state) 
+                    return 
+                end
             
-                print('Called Function')
-
+                print("Called Function, State:", state)
+            
                 if object then
+                    print("Object exists, setting visibility")
                     object.Visible = state
+                else
+                    print("Object is nil")
                 end
-
+            
                 if bottom_components then
+                    print("Bottom components exist, setting visibility")
                     bottom_components.Visible = state
+                else
+                    print("Bottom components are nil")
                 end
-
-                slider_holder.Visible = state
-            end            
+            
+                if slider_holder then
+                    print("Slider holder exists, setting visibility")
+                    slider_holder.Visible = state
+                else
+                    print("Slider holder is nil")
+                end
+            end                   
 
             library:connection(uis.InputChanged, function(input)
                 if cfg.dragging and input.UserInputType == Enum.UserInputType.MouseMovement then 
