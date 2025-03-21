@@ -3557,19 +3557,19 @@ end
             end
 
             function cfg.set_visible(state)
-                if type(state) ~= "string" then
+                if type(state[1]) ~= "boolean" then
                     return
                 end
 
                 if object then
-                    object.Visible = state == 'enabled' and true or false 
+                    object.Visible = state[1]
                 end
 
                 if bottom_components then
-                    bottom_components.Visible = state == 'enabled' and true or false 
+                    bottom_components.Visible = state[1]
                 end
 
-                slider_holder.Visible = state == 'enabled' and true or false 
+                slider_holder.Visible = state[1]
             end            
 
             library:connection(uis.InputChanged, function(input)
