@@ -5192,7 +5192,7 @@ end
                 Active = true, 
                 Draggable = false, 
                 BorderColor3 = Color3.fromRGB(0, 0, 0),
-                Size = UDim2.new(0, 100, 0, 300),
+                Size = UDim2.new(0, 200, 0, 100),
                 BackgroundColor3 = Color3.fromRGB(40, 40, 40)
             })
             
@@ -5247,13 +5247,15 @@ end
                 TextStrokeTransparency = 0.5,
                 BorderSizePixel = 0,
                 BackgroundTransparency = 1,
-                Position = UDim2.new(0, 50, 0, 10),
-                Size = UDim2.new(1, 0, 0, 1),
+                Position = UDim2.new(0.5, 0, 0, 20),
+                AnchorPoint = Vector2.new(0.5, 0),
+                Size = UDim2.new(1, -10, 0, 14),
                 ZIndex = 2,
                 TextSize = 12,
-                BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+                TextXAlignment = Enum.TextXAlignment.Center -- Centers the text
             })
-
+            
             local text2 = library:create("TextLabel", {
                 Parent = inline1,
                 Name = "",
@@ -5264,13 +5266,15 @@ end
                 TextStrokeTransparency = 0.5,
                 BorderSizePixel = 0,
                 BackgroundTransparency = 1,
-                Position = UDim2.new(0, 50, 0, 31),
-                Size = UDim2.new(1, 0, 0, 12),
+                Position = UDim2.new(0.5, 0, 0, 31),
+                AnchorPoint = Vector2.new(0.5, 0),
+                Size = UDim2.new(1, -10, 0, 12),
                 ZIndex = 2,
                 TextSize = 12,
-                BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+                TextXAlignment = Enum.TextXAlignment.Center
             })
-
+            
             local text3 = library:create("TextLabel", {
                 Parent = inline1,
                 Name = "",
@@ -5281,11 +5285,13 @@ end
                 TextStrokeTransparency = 0.5,
                 BorderSizePixel = 0,
                 BackgroundTransparency = 1,
-                Position = UDim2.new(0, 50, 0, 43),
-                Size = UDim2.new(1, 0, 0, 1),
+                Position = UDim2.new(0.5, 0, 0, 43),
+                AnchorPoint = Vector2.new(0.5, 0),
+                Size = UDim2.new(1, -10, 0, 12),
                 ZIndex = 2,
                 TextSize = 12,
-                BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+                TextXAlignment = Enum.TextXAlignment.Center
             })
 
             local playerImage = library:create("ImageLabel", {
