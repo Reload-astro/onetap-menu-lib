@@ -5341,6 +5341,14 @@ end
                 health.Text = table.health or table.hp or "100"
                 armor.Text = table.armor or table.ar or "100"
             end
+
+            for k, v in pairs(library) do
+                if type(v) == "function" then
+                    cfg[k] = v
+                end
+            end
+
+            return cfg
         end
 
         function library:panel(properties)
