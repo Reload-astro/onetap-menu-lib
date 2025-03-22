@@ -5192,7 +5192,7 @@ end
                 Active = true, 
                 Draggable = false, 
                 BorderColor3 = Color3.fromRGB(0, 0, 0),
-                Size = UDim2.new(0, ((#cfg.name / 1.6) * 5) + 13, 0, 40),
+                Size = UDim2.new(0, 90, 0, 50),
                 BackgroundColor3 = Color3.fromRGB(40, 40, 40)
             })
             
@@ -5247,7 +5247,7 @@ end
                 TextStrokeTransparency = 0.5,
                 BorderSizePixel = 0,
                 BackgroundTransparency = 1,
-                Position = UDim2.new(0, 0, 0, -1),
+                Position = UDim2.new(0, 50, 0, -1),
                 Size = UDim2.new(1, 0, 0, 1),
                 ZIndex = 2,
                 TextSize = 12,
@@ -5264,7 +5264,7 @@ end
                 TextStrokeTransparency = 0.5,
                 BorderSizePixel = 0,
                 BackgroundTransparency = 1,
-                Position = UDim2.new(0, 0, 0, 11),
+                Position = UDim2.new(0, 50, 0, 11),
                 Size = UDim2.new(1, 0, 0, 12),
                 ZIndex = 2,
                 TextSize = 12,
@@ -5281,11 +5281,21 @@ end
                 TextStrokeTransparency = 0.5,
                 BorderSizePixel = 0,
                 BackgroundTransparency = 1,
-                Position = UDim2.new(0, 0, 0, 23),
+                Position = UDim2.new(0, 50, 0, 23),
                 Size = UDim2.new(1, 0, 0, 1),
                 ZIndex = 2,
                 TextSize = 12,
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            })
+
+            local playerImage = library:create("ImageLabel", {
+                Parent = inline1,
+                Name = "PlayerImage",
+                Image = "rbxthumb://type=AvatarHeadShot&id=7996318143&w=420&h=420",
+                BackgroundTransparency = 1,
+                Position = UDim2.new(0, 4, 0.5, -20),
+                Size = UDim2.new(0, 40, 0, 40),
+                BorderSizePixel = 0
             })
             
             local tab_inline = library:create("Frame", {
@@ -5341,16 +5351,22 @@ end
                     warn("set_info expected a table but got: ", typeof(table))
                     return
                 end
-                
+            
                 local name = table.text or table.name or "Name"
                 local health = table.health or table.hp or "100"
                 local armor = table.armor or table.ar or "100"
-                
+                local userId = table.userId or (table.character and table.character:GetAttribute("UserId")) or nil
+            
                 text1.Text = "name: " .. name
                 text2.Text = "health: " .. health
                 text3.Text = "armor: " .. armor
-                
-                inline1.Size = UDim2.new(0, ((#"name: " .. name / 1.6) * 5) + 13, 0, 40)
+
+                if userId then
+                    local imageUrl = players:GetUserThumbnailAsync(userId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
+                    playerImage.Image = imageUrl
+                else
+                    playerImage.Image = "rbxthumb://type=AvatarHeadShot&id=7996318143&w=420&h=420" -- Default image
+                end
             end
             
 
