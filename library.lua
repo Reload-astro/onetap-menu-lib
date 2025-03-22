@@ -5281,7 +5281,7 @@ end
                 TextStrokeTransparency = 0.5,
                 BorderSizePixel = 0,
                 BackgroundTransparency = 1,
-                Position = UDim2.new(0, 0, 0, 22),
+                Position = UDim2.new(0, 0, 0, 23),
                 Size = UDim2.new(1, 0, 0, 1),
                 ZIndex = 2,
                 TextSize = 12,
