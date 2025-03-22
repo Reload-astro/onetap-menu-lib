@@ -477,13 +477,13 @@ end
                     Parent = library.gui,
                     Name = "",
                     BackgroundTransparency = 1,
-                    Position = UDim2.new(0, 20, 0, 20),
+                    Position = UDim2.new(1, -20, 0, 20),
                     BorderColor3 = Color3.fromRGB(19, 19, 19),
                     ZIndex = 2,
                     AutomaticSize = Enum.AutomaticSize.X,
                     BackgroundColor3 = Color3.fromRGB(40, 40, 40)
                 })
-                
+            
                 local inline1 = library:create("Frame", {
                     Parent = __holder,
                     Name = "",
@@ -5179,7 +5179,7 @@ end
                 Name = "",
                 Visible = false,
                 BackgroundTransparency = 1,
-                Position = UDim2.new(0, 20, 0, 20),
+                Position = UDim2.new(0, 100, 0, 20),
                 BorderColor3 = Color3.fromRGB(19, 19, 19),
                 ZIndex = 2,
                 AutomaticSize = Enum.AutomaticSize.X,
@@ -5190,7 +5190,7 @@ end
                 Parent = targetui,
                 Name = "",
                 Active = true, 
-                Draggable = false, 
+                Draggable = true, 
                 BorderColor3 = Color3.fromRGB(0, 0, 0),
                 Size = UDim2.new(0, 200, 0, 100),
                 BackgroundColor3 = Color3.fromRGB(40, 40, 40)
@@ -5253,7 +5253,7 @@ end
                 ZIndex = 2,
                 TextSize = 12,
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-                TextXAlignment = Enum.TextXAlignment.Center -- Centers the text
+                TextXAlignment = Enum.TextXAlignment.Center
             })
             
             local text2 = library:create("TextLabel", {
