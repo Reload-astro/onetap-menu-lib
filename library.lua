@@ -5179,7 +5179,7 @@ end
                 Name = "",
                 Visible = false,
                 BackgroundTransparency = 1,
-                Position = UDim2.new(0, 100, 0, 20),
+                Position = UDim2.new(0, 50, 0, 200),
                 BorderColor3 = Color3.fromRGB(19, 19, 19),
                 ZIndex = 2,
                 AutomaticSize = Enum.AutomaticSize.X,
@@ -5299,7 +5299,7 @@ end
                 Name = "PlayerImage",
                 Image = "rbxthumb://type=AvatarHeadShot&id=7996318143&w=420&h=420",
                 BackgroundTransparency = 1,
-                Position = UDim2.new(0, 4, 0.5, -20),
+                Position = UDim2.new(0, 14, 0.5, -20),
                 Size = UDim2.new(0, 40, 0, 40),
                 BorderSizePixel = 0
             })
