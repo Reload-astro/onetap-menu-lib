@@ -3556,20 +3556,20 @@ end
                 cfg.callback(flags[cfg.flag])
             end
 
-            function cfg.set_visible(state)
-                if type(state[1]) ~= "boolean" then
+            function cfg.set_visible(bool)
+                if type(bool) ~= "boolean" then
                     return
                 end
 
                 if object then
-                    object.Visible = state[1]
+                    object.Visible = bool
                 end
 
                 if bottom_components then
-                    bottom_components.Visible = state[1]
+                    bottom_components.Visible = bool
                 end
 
-                slider_holder.Visible = state[1]
+                slider_holder.Visible = bool
             end            
 
             library:connection(uis.InputChanged, function(input)
@@ -5166,6 +5166,182 @@ end
 
             return cfg
         end 
+
+        function library:target(properties)
+            local cfg = {
+                name = properties.text or properties.name or "Player Name",
+                health = properties.health or properties.hp or "100",
+                armor = properties.armor or properties.ar or "100"
+            }
+
+            local targetui = library:create("Frame", {
+                Parent = library.gui,
+                Name = "",
+                Visible = false,
+                BackgroundTransparency = 1,
+                Position = UDim2.new(0, 20, 0, 20),
+                BorderColor3 = Color3.fromRGB(19, 19, 19),
+                ZIndex = 2,
+                AutomaticSize = Enum.AutomaticSize.X,
+                BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+            })
+            
+            local inline1 = library:create("Frame", {
+                Parent = targetui,
+                Name = "",
+                Active = true, 
+                Draggable = false, 
+                BorderColor3 = Color3.fromRGB(0, 0, 0),
+                Size = UDim2.new(0, ((#cfg.name / 1.6) * 5) + 13, 0, 40),
+                BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+            })
+            
+            local accent_line = library:create("Frame", {
+                Parent = inline1,
+                Name = "",
+                BorderColor3 = Color3.fromRGB(34, 34, 34),
+                Size = UDim2.new(1, 0, 0, 2),
+                BorderSizePixel = 0,
+                BackgroundColor3 = themes.preset.accent 
+            })
+
+            library:apply_theme(accent_line, "accent", "BackgroundColor3") 
+            
+            local depth = library:create("Frame", {
+                Parent = inline1,
+                Name = "",
+                BackgroundTransparency = 0.5,
+                Position = UDim2.new(0, 0, 0, 1),
+                BorderColor3 = Color3.fromRGB(0, 0, 0),
+                Size = UDim2.new(1, 0, 0, 1),
+                BorderSizePixel = 0,
+                BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+            })
+            
+            local inline2 = library:create("Frame", {
+                Parent = inline1,
+                Name = "",
+                Position = UDim2.new(0, 2, 0, 2),
+                BorderColor3 = Color3.fromRGB(0, 0, 0),
+                Size = UDim2.new(1, -4, 1, -4),
+                BorderSizePixel = 0,
+                BackgroundColor3 = Color3.fromRGB(26, 26, 26)
+            })
+            
+            local main = library:create("Frame", {
+                Parent = inline2,
+                Name = "",
+                Position = UDim2.new(0, 2, 0, 2),
+                BorderColor3 = Color3.fromRGB(57, 57, 57),
+                Size = UDim2.new(1, -4, 1, -4),
+                BackgroundColor3 = Color3.fromRGB(26, 26, 26)
+            })
+
+            local name = library:create("TextLabel", {
+                Parent = inline1,
+                Name = "",
+                FontFace = library.font,
+                TextColor3 = Color3.fromRGB(170, 170, 170),
+                BorderColor3 = Color3.fromRGB(0, 0, 0),
+                Text = cfg.name,
+                TextStrokeTransparency = 0.5,
+                BorderSizePixel = 0,
+                BackgroundTransparency = 1,
+                Position = UDim2.new(0, 0, 0, -1),
+                Size = UDim2.new(1, 0, 0, 1),
+                ZIndex = 2,
+                TextSize = 12,
+                BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            })
+
+            local health = library:create("TextLabel", {
+                Parent = inline1,
+                Name = "",
+                FontFace = library.font,
+                TextColor3 = Color3.fromRGB(170, 170, 170),
+                BorderColor3 = Color3.fromRGB(0, 0, 0),
+                Text = cfg.health,
+                TextStrokeTransparency = 0.5,
+                BorderSizePixel = 0,
+                BackgroundTransparency = 1,
+                Position = UDim2.new(0, 0, 0, 11),
+                Size = UDim2.new(1, 0, 0, 12),
+                ZIndex = 2,
+                TextSize = 12,
+                BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            })
+
+            local armor = library:create("TextLabel", {
+                Parent = inline1,
+                Name = "",
+                FontFace = library.font,
+                TextColor3 = Color3.fromRGB(170, 170, 170),
+                BorderColor3 = Color3.fromRGB(0, 0, 0),
+                Text = cfg.armor,
+                TextStrokeTransparency = 0.5,
+                BorderSizePixel = 0,
+                BackgroundTransparency = 1,
+                Position = UDim2.new(0, 0, 0, 22),
+                Size = UDim2.new(1, 0, 0, 1),
+                ZIndex = 2,
+                TextSize = 12,
+                BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            })
+            
+            local tab_inline = library:create("Frame", {
+                Parent = main,
+                Name = "",
+                Position = UDim2.new(0, 6, 0, 6),
+                BorderColor3 = Color3.fromRGB(19, 19, 19),
+                Size = UDim2.new(1, -12, 1, -12),
+                BorderSizePixel = 0,
+                BackgroundColor3 = Color3.fromRGB(19, 19, 19)
+            })
+            
+            local tabs = library:create("Frame", {
+                Parent = tab_inline,
+                Name = "",
+                Position = UDim2.new(0, 2, 0, 2),
+                BorderColor3 = Color3.fromRGB(56, 56, 56),
+                Size = UDim2.new(1, -4, 1, -4),
+                BackgroundColor3 = Color3.fromRGB(22, 22, 22)
+            })
+            
+            local UIPadding = library:create("UIPadding", {
+                Parent = tabs,
+                Name = "",
+                PaddingRight = UDim.new(0, 21)
+            })
+            
+            local glow = library:create("ImageLabel", {
+                Parent = accent_line,
+                Name = "",
+                ImageColor3 = themes.preset.accent,
+                ScaleType = Enum.ScaleType.Slice,
+                ImageTransparency = 0.8999999761581421,
+                BorderColor3 = Color3.fromRGB(0, 0, 0),
+                BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+                Image = "http://www.roblox.com/asset/?id=18245826428",
+                BackgroundTransparency = 1,
+                Position = UDim2.new(0, -20, 0, -20),
+                Size = UDim2.new(1, 40, 0, 42),
+                ZIndex = 2,
+                BorderSizePixel = 0,
+                SliceCenter = Rect.new(Vector2.new(21, 21), Vector2.new(79, 79))
+            })
+
+            library:apply_theme(glow, "accent", "ImageColor3") 
+
+            function cfg:set_visible(bool)
+                targetui.Visible = bool
+            end
+
+            function cfg:set_info(table)
+                name.Text = table.text or table.name
+                health.Text = table.health or table.hp
+                armor.Text = table.armor or table.ar
+            end
+        end
 
         function library:panel(properties)
             if library.__panel == true then 
