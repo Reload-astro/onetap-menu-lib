@@ -5238,7 +5238,7 @@ end
             })
 
             local text1 = library:create("TextLabel", {
-                Parent = main,
+                Parent = inline1,
                 Name = "",
                 FontFace = library.font,
                 TextColor3 = Color3.fromRGB(170, 170, 170),
@@ -5255,7 +5255,7 @@ end
             })
 
             local text2 = library:create("TextLabel", {
-                Parent = main,
+                Parent = inline1,
                 Name = "",
                 FontFace = library.font,
                 TextColor3 = Color3.fromRGB(170, 170, 170),
@@ -5272,7 +5272,7 @@ end
             })
 
             local text3 = library:create("TextLabel", {
-                Parent = main,
+                Parent = inline1,
                 Name = "",
                 FontFace = library.font,
                 TextColor3 = Color3.fromRGB(170, 170, 170),
@@ -5289,7 +5289,7 @@ end
             })
 
             local playerImage = library:create("ImageLabel", {
-                Parent = main,
+                Parent = inline1,
                 Name = "PlayerImage",
                 Image = "rbxthumb://type=AvatarHeadShot&id=7996318143&w=420&h=420",
                 BackgroundTransparency = 1,
