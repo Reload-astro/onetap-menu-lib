@@ -477,7 +477,7 @@ end
                     Parent = library.gui,
                     Name = "",
                     BackgroundTransparency = 1,
-                    Position = UDim2.new(1, -20, 0, 20),
+                    Position = UDim2.new(1, 20, 0, 20),
                     BorderColor3 = Color3.fromRGB(19, 19, 19),
                     ZIndex = 2,
                     AutomaticSize = Enum.AutomaticSize.X,
