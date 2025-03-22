@@ -5337,9 +5337,9 @@ end
             end
 
             function cfg:set_info(table)
-                name.Text = table.text or table.name
-                health.Text = table.health or table.hp
-                armor.Text = table.armor or table.ar
+                name.Text = table.text or table.name or "Name"
+                health.Text = table.health or table.hp or "100"
+                armor.Text = table.armor or table.ar or "100"
             end
         end
 
