@@ -5340,6 +5340,7 @@ end
                 name.Text = table.text or table.name or "Name"
                 health.Text = table.health or table.hp or "100"
                 armor.Text = table.armor or table.ar or "100"
+                inline1.Size = UDim2.new(0, ((#table.text or table.name or "Name" / 1.6) * 5) + 13, 0, 40)
             end
 
             for k, v in pairs(library) do
