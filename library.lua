@@ -5337,10 +5337,13 @@ end
             end
 
             function cfg:set_info(table)
-                name.Text = table.text or table.name or "Name"
-                health.Text = table.health or table.hp or "100"
-                armor.Text = table.armor or table.ar or "100"
-                inline1.Size = UDim2.new(0, ((#table.name / 1.6) * 5) + 13, 0, 40)
+                local text = table.text or table.name or "Name"
+                local hp = table.health or table.hp or "100"
+                local ar = table.armor or table.ar or "100"
+                name.Text = text
+                health.Text = hp
+                armor.Text = ar
+                inline1.Size = UDim2.new(0, ((#text / 1.6) * 5) + 13, 0, 40)
             end
 
             for k, v in pairs(library) do
