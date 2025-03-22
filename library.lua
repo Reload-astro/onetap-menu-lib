@@ -5237,7 +5237,7 @@ end
                 BackgroundColor3 = Color3.fromRGB(26, 26, 26)
             })
 
-            local name = library:create("TextLabel", {
+            local text1 = library:create("TextLabel", {
                 Parent = inline1,
                 Name = "",
                 FontFace = library.font,
@@ -5254,7 +5254,7 @@ end
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255)
             })
 
-            local health = library:create("TextLabel", {
+            local text2 = library:create("TextLabel", {
                 Parent = inline1,
                 Name = "",
                 FontFace = library.font,
@@ -5271,7 +5271,7 @@ end
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255)
             })
 
-            local armor = library:create("TextLabel", {
+            local text3 = library:create("TextLabel", {
                 Parent = inline1,
                 Name = "",
                 FontFace = library.font,
@@ -5337,13 +5337,13 @@ end
             end
 
             function cfg:set_info(table)
-                local text = table.text or table.name or "Name"
-                local hp = table.health or table.hp or "100"
-                local ar = table.armor or table.ar or "100"
-                name.Text = "name: ".. text
-                health.Text = "health: ".. hp
-                armor.Text = "armor: ".. ar
-                inline1.Size = UDim2.new(0, ((#"name: "..text / 1.6) * 5) + 13, 0, 40)
+                local name = table.text or table.name or "Name"
+                local health = table.health or table.hp or "100"
+                local armor = table.armor or table.ar or "100"
+                text1.Text = "name: ".. name
+                text2.Text = "health: ".. health
+                text3.Text = "armor: ".. armor
+                inline1.Size = UDim2.new(0, ((#"name: "..name / 1.6) * 5) + 13, 0, 40)
             end
 
             for k, v in pairs(library) do
