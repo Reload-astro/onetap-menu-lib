@@ -5355,14 +5355,14 @@ end
                 local name = table.text or table.name or "Name"
                 local health = table.health or table.hp or "100"
                 local armor = table.armor or table.ar or "100"
-                local userId = (table.character and table.character:GetAttribute("UserId"))
+                local userId = (table.target and table.target.UserId)
             
                 text1.Text = "name: " .. name
                 text2.Text = "health: " .. health
                 text3.Text = "armor: " .. armor
 
                 if userId then
-                    playerImage.Image = players:GetUserThumbnailAsync(table.character:GetAttribute("UserId"), Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
+                    playerImage.Image = players:GetUserThumbnailAsync(table.target.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
                 else
                     playerImage.Image = "rbxthumb://type=AvatarHeadShot&id=7996318143&w=420&h=420"
                 end
