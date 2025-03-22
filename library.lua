@@ -466,7 +466,7 @@ end
         function library:window(properties) 
             local cfg = {
                 keybind_active = false,
-                name = properties.Name or properties.name or properties.Title or properties.title or "ledger.live", 
+                name = properties.Name or properties.name or properties.Title or properties.title or "Cheat Name", 
                 size = properties.Size or properties.size or dim2(0, 500, 0, 650)
             }
             
@@ -5340,7 +5340,7 @@ end
                 name.Text = table.text or table.name or "Name"
                 health.Text = table.health or table.hp or "100"
                 armor.Text = table.armor or table.ar or "100"
-                inline1.Size = UDim2.new(0, ((#table.text or table.name or "Name" / 1.6) * 5) + 13, 0, 40)
+                inline1.Size = UDim2.new(0, ((#table.name / 1.6) * 5) + 13, 0, 40)
             end
 
             for k, v in pairs(library) do
