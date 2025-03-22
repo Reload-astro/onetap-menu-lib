@@ -5192,7 +5192,7 @@ end
                 Active = true, 
                 Draggable = false, 
                 BorderColor3 = Color3.fromRGB(0, 0, 0),
-                Size = UDim2.new(0, 90, 0, 50),
+                Size = UDim2.new(0, 100, 0, 100),
                 BackgroundColor3 = Color3.fromRGB(40, 40, 40)
             })
             
@@ -5238,7 +5238,7 @@ end
             })
 
             local text1 = library:create("TextLabel", {
-                Parent = inline1,
+                Parent = main,
                 Name = "",
                 FontFace = library.font,
                 TextColor3 = Color3.fromRGB(170, 170, 170),
@@ -5255,7 +5255,7 @@ end
             })
 
             local text2 = library:create("TextLabel", {
-                Parent = inline1,
+                Parent = main,
                 Name = "",
                 FontFace = library.font,
                 TextColor3 = Color3.fromRGB(170, 170, 170),
@@ -5272,7 +5272,7 @@ end
             })
 
             local text3 = library:create("TextLabel", {
-                Parent = inline1,
+                Parent = main,
                 Name = "",
                 FontFace = library.font,
                 TextColor3 = Color3.fromRGB(170, 170, 170),
@@ -5289,7 +5289,7 @@ end
             })
 
             local playerImage = library:create("ImageLabel", {
-                Parent = inline1,
+                Parent = main,
                 Name = "PlayerImage",
                 Image = "rbxthumb://type=AvatarHeadShot&id=7996318143&w=420&h=420",
                 BackgroundTransparency = 1,
@@ -5355,17 +5355,16 @@ end
                 local name = table.text or table.name or "Name"
                 local health = table.health or table.hp or "100"
                 local armor = table.armor or table.ar or "100"
-                local userId = table.userId or (table.character and table.character:GetAttribute("UserId")) or nil
+                local userId = (table.character and table.character:GetAttribute("UserId"))
             
                 text1.Text = "name: " .. name
                 text2.Text = "health: " .. health
                 text3.Text = "armor: " .. armor
 
                 if userId then
-                    local imageUrl = players:GetUserThumbnailAsync(userId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
-                    playerImage.Image = imageUrl
+                    playerImage.Image = players:GetUserThumbnailAsync(table.character:GetAttribute("UserId"), Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
                 else
-                    playerImage.Image = "rbxthumb://type=AvatarHeadShot&id=7996318143&w=420&h=420" -- Default image
+                    playerImage.Image = "rbxthumb://type=AvatarHeadShot&id=7996318143&w=420&h=420"
                 end
             end
             
