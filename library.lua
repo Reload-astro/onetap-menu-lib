@@ -335,6 +335,18 @@ end
             return enum_table
         end
 
+        function library:get_configs()
+            local list = {};
+    
+            for _, v in next, listfiles(library.cheatname..'/'..library.gamename..'/configs') do
+                local name = v:match("([^\\/]+)%..+$")
+                if name and v:sub(-#library.fileext) == library.fileext then
+                    list[#list + 1] = name
+                end
+            end
+            return list
+        end
+
         function library:get_config(name)
             if isfile(library.cheatname..'/'..library.gamename..'/configs/'..name..library.fileext) then
                 return readfile(library.cheatname..'/'..library.gamename..'/configs/'..name..library.fileext);
@@ -398,6 +410,55 @@ end
             end
         end
         
+        function library:get_auto_load_config()
+            if not library:get_config('autoloads'.. library.fileext) then
+                writefile(library.cheatname..'/'..library.gamename..'/configs/'.."autoloads".. library.fileext, http_service:JSONEncode({}))
+            end
+        
+            local auto_loads = http_service:JSONDecode(readfile(library.cheatname..'/'..library.gamename..'/configs/'.."autoloads".. library.fileext))
+            local auto_load = auto_loads[tostring(game.GameId)]
+        
+            if table.find(library:get_configs(), auto_load) then
+                return auto_load
+            end
+        end
+        
+        function library:add_to_auto_load(name)
+            if not library:get_config('autoloads'.. library.fileext) then
+                writefile(library.cheatname..'/'..library.gamename..'/configs/'.."autoloads".. library.fileext, http_service:JSONEncode({}))
+            end
+        
+            local auto_loads = http_service:JSONDecode(readfile(library.cheatname..'/'..library.gamename..'/configs/'.."autoloads".. library.fileext))
+            auto_loads[tostring(game.GameId)] = name
+        
+            writefile(library.cheatname..'/'..library.gamename..'/configs/'.."autoloads".. library.fileext, http_service:JSONEncode(auto_loads))
+        end
+        
+        function library:remove_from_auto_load()
+            if not library:get_config('autoloads'.. library.fileext) then
+                writefile(library.cheatname..'/'..library.gamename..'/configs/'.."autoloads".. library.fileext, http_service:JSONEncode({}))
+                return
+            end
+        
+            local auto_loads = http_service:JSONDecode(readfile(library.cheatname..'/'..library.gamename..'/configs/'.."autoloads".. library.fileext))
+            auto_loads[tostring(game.GameId)] = nil
+        
+            writefile(library.cheatname..'/'..library.gamename..'/configs/'.."autoloads".. library.fileext, http_service:JSONEncode(auto_loads))
+        end
+        
+        function library:auto_load_config()
+            if not library:get_config('autoloads'.. library.fileext) then
+                writefile(library.cheatname..'/'..library.gamename..'/configs/'.."autoloads".. library.fileext, http_service:JSONEncode({}))
+            end
+        
+            local auto_loads = http_service:JSONDecode(readfile(library.cheatname..'/'..library.gamename..'/configs/'.."autoloads".. library.fileext))
+            local auto_load = auto_loads[tostring(game.GameId)]
+        
+            if table.find(library:get_configs(), auto_load) then
+                library:load_config(auto_load)
+            end
+        end        
+
         function library:round(number, float) 
             local multiplier = 1 / (float or 1)
             return math.floor(number * multiplier + 0.5) / multiplier
@@ -5347,21 +5408,6 @@ end
 function library:CreateConfigTab(window)
     local configs = window:tab({name = "configs"})
     local config = configs:section({name = "Theming System", side = "right"})
-
-    local function refreshConfigs()
-        if not library.config_holder then return end; 
-        
-        local list = {};
-    
-        for _, v in next, listfiles(library.cheatname..'/'..library.gamename..'/configs') do
-            local name = v:match("([^\\/]+)%..+$")
-            if name and v:sub(-#library.fileext) == library.fileext then
-                list[#list + 1] = name
-            end
-        end            
-        
-        library.config_holder:refresh_options(list)
-    end
     
     config:toggle({name = "Keybind List", flag = "keybind_list", default = false, callback = function(bool)
         window.toggle_list(bool)
@@ -5413,6 +5459,14 @@ function library:CreateConfigTab(window)
         game:GetService("VoiceChatService"):joinVoice()
     end})
 
+    config:button({name = "Autoload", callback = function()
+        library:add_to_auto_load(flags["config_name_list"])
+    end})
+
+    config:button({name = "Remove Autoload", callback = function()
+        library:remove_from_auto_load(flags["config_name_list"])
+    end})
+
     local configs_section = configs:section({name = "Configuration System", side = "left"})
 
     configs_section:textbox({flag = "config_name_text_box"})
@@ -5441,7 +5495,7 @@ function library:CreateConfigTab(window)
         end
         
         writefile(library.cheatname..'/'..library.gamename..'/configs/'..flags["config_name_text_box"].. library.fileext, http_service:JSONEncode({}));
-        refreshConfigs()
+        library.config_holder:refresh_options(library:get_configs())
     end})
 
     configs_section:button({text = 'Delete', callback = function()
@@ -5452,7 +5506,7 @@ function library:CreateConfigTab(window)
                 if option == "Yes" then 
                     if library:get_config(flags["config_name_list"]) then
                         delfile(library.cheatname..'/'..library.gamename..'/configs/'..flags["config_name_list"].. library.fileext)
-                        refreshConfigs()
+                        library.config_holder:refresh_options(library:get_configs())
                     end
                 end 
             end
@@ -5463,7 +5517,8 @@ function library:CreateConfigTab(window)
         library:unload()
     end})
 
-    refreshConfigs()
+    library.config_holder:refresh_options(library:get_configs())
+    library:auto_load_config()
 end
 
 library.gui.Parent = library.folder
