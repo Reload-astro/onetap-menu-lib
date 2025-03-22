@@ -5192,7 +5192,7 @@ end
                 Active = true, 
                 Draggable = false, 
                 BorderColor3 = Color3.fromRGB(0, 0, 0),
-                Size = UDim2.new(0, 100, 0, 100),
+                Size = UDim2.new(0, 100, 0, 300),
                 BackgroundColor3 = Color3.fromRGB(40, 40, 40)
             })
             
