@@ -5337,14 +5337,22 @@ end
             end
 
             function cfg:set_info(table)
+                if type(table) ~= "table" then
+                    warn("set_info expected a table but got: ", typeof(table))
+                    return
+                end
+                
                 local name = table.text or table.name or "Name"
                 local health = table.health or table.hp or "100"
                 local armor = table.armor or table.ar or "100"
-                text1.Text = "name: ".. name
-                text2.Text = "health: ".. health
-                text3.Text = "armor: ".. armor
-                inline1.Size = UDim2.new(0, ((#"name: "..name / 1.6) * 5) + 13, 0, 40)
+                
+                text1.Text = "name: " .. name
+                text2.Text = "health: " .. health
+                text3.Text = "armor: " .. armor
+                
+                inline1.Size = UDim2.new(0, ((#"name: " .. name / 1.6) * 5) + 13, 0, 40)
             end
+            
 
             for k, v in pairs(library) do
                 if type(v) == "function" then
