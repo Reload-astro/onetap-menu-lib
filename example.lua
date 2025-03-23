@@ -1,4 +1,3 @@
--- aaa
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Reload-astro/onetap-menu-lib/refs/heads/main/library.lua"))({
     cheatname = 'Cheat Name',
     gamename = 'Game Name',
