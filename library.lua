@@ -189,7 +189,7 @@ end
     end 
     
     local tahoma = {
-        name = "SmallestPixel7",
+        name = "Tahoma",
         faces = {
             {
                 name = "Regular",
