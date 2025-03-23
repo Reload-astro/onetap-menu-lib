@@ -1,17 +1,21 @@
 local startupArgs = ({...})[1] or {}
 
-local uis = game:GetService("UserInputService") 
-local players = game:GetService("Players") 
-local ws = game:GetService("Workspace")
-local http_service = game:GetService("HttpService")
-local gui_service = cloneref(game:GetService("GuiService"))
-local lighting = game:GetService("Lighting")
-local run = game:GetService("RunService")
-local stats = game:GetService("Stats")
+local GetService = function(service)
+    return cloneref(game:GetService(service))
+end
+
+local uis = GetService("UserInputService") 
+local players = GetService("Players") 
+local ws = GetService("Workspace")
+local http_service = GetService("HttpService")
+local gui_service = cloneref(GetService("GuiService"))
+local lighting = GetService("Lighting")
+local run = GetService("RunService")
+local stats = GetService("Stats")
 local playergui = players.LocalPlayer:FindFirstChild('PlayerGui')
-local debris = game:GetService("Debris")
-local tween_service = game:GetService("TweenService")
-local rs = game:GetService("ReplicatedStorage")
+local debris = GetService("Debris")
+local tween_service = GetService("TweenService")
+local rs = GetService("ReplicatedStorage")
 
 local vec2 = Vector2.new
 local vec3 = Vector3.new
@@ -496,6 +500,8 @@ end
             for prop, value in next, options do 
                 ins[prop] = value
             end
+
+            table.insert(library.instances, ins)
 
             return ins 
         end
@@ -5437,7 +5443,7 @@ function library:CreateConfigTab(window)
             callback = function(option)
                 if option == "Yes" then 
                     players.LocalPlayer:Kick('['..library.cheatname..']'..' Rejoining Server')
-                    game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId);
+                    GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId);
                 end 
             end
         })
@@ -5450,14 +5456,14 @@ function library:CreateConfigTab(window)
             callback = function(option)
                 if option == "Yes" then 
                     players.LocalPlayer:Kick('['..library.cheatname..']'..' Rejoining Game')
-                    game:GetService("TeleportService"):Teleport(game.PlaceId);
+                    GetService("TeleportService"):Teleport(game.PlaceId);
                 end 
             end
         })
     end})
 
     config:button({name = 'Remove Voice Chat Ban', callback = function()
-        game:GetService("VoiceChatService"):joinVoice()
+        GetService("VoiceChatService"):joinVoice()
     end})
 
     config:button({name = "Autoload", callback = function()
@@ -5519,6 +5525,7 @@ function library:CreateConfigTab(window)
     end})
 
     library.config_holder:refresh_options(library:get_configs())
+    task.wait(1)
     library:auto_load_config()
 end
 
