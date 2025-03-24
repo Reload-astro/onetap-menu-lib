@@ -8,7 +8,7 @@ local uis = GetService("UserInputService")
 local players = GetService("Players") 
 local ws = GetService("Workspace")
 local http_service = GetService("HttpService")
-local gui_service = cloneref(GetService("GuiService"))
+local gui_service = GetService("GuiService")
 local lighting = GetService("Lighting")
 local run = GetService("RunService")
 local stats = GetService("Stats")
@@ -61,7 +61,7 @@ end
         sin = 0,
         keybind_path = nil; 
         panel_open = false, 
-        color = startupArgs.color or Color3.fromRGB(79, 155, 255),
+        color = startupArgs.color or Color3.fromRGB(181, 0, 41),
         cheatname = startupArgs.cheatname or 'Title',
         gamename = startupArgs.gamename or 'Unknown',
         fileext = startupArgs.fileext or '.cfg',
@@ -76,12 +76,12 @@ end
         preset = {
             ["outline"] = rgb(32, 32, 38), -- 
             ["inline"] = rgb(60, 55, 75), --
-            ["accent"] = library.color or rgb(181, 0, 41), --
+            ["accent"] = library.color, --
             ["contrast"] = rgb(35, 35, 47),
             ["text"] = rgb(170, 170, 170),
             ["unselected_text"] = rgb(90, 90, 90),
             ["text_outline"] = rgb(0, 0, 0),
-            ["glow"] = library.color or rgb(181, 0, 41), 
+            ["glow"] = library.color, 
         }, 	
 
         utility = {
