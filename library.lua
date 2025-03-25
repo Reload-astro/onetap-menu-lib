@@ -52,6 +52,7 @@ end
         connections = {},   
         notifications = {}, 
         instances = {},
+        coroutines = {},
         main_frame = {}, 
         config_holder = nil,
         current_tab = nil, 
@@ -417,10 +418,10 @@ end
         
         function library:get_auto_load_config()
             if not library:get_config('autoload/autoloads'.. library.fileext) then
-                writefile(library.cheatname..'/'..library.gamename..'/configs/autoload/'.."autoloads".. library.fileext, http_service:JSONEncode({}))
+                writefile(library.cheatname..'/'..library.gamename..'/configs/autoload/'.."autoloads.json", http_service:JSONEncode({}))
             end
         
-            local auto_loads = http_service:JSONDecode(readfile(library.cheatname..'/'..library.gamename..'/configs/autoload/'.."autoloads".. library.fileext))
+            local auto_loads = http_service:JSONDecode(readfile(library.cheatname..'/'..library.gamename..'/configs/autoload/'.."autoloads.json"))
             local auto_load = auto_loads[tostring(game.GameId)]
         
             if table.find(library:get_configs(), auto_load) then
@@ -430,33 +431,33 @@ end
         
         function library:add_to_auto_load(name)
             if not library:get_config('autoload/autoloads'.. library.fileext) then
-                writefile(library.cheatname..'/'..library.gamename..'/configs/autoload/'.."autoloads".. library.fileext, http_service:JSONEncode({}))
+                writefile(library.cheatname..'/'..library.gamename..'/configs/autoload/'.."autoloads.json", http_service:JSONEncode({}))
             end
         
-            local auto_loads = http_service:JSONDecode(readfile(library.cheatname..'/'..library.gamename..'/configs/autoload/'.."autoloads".. library.fileext))
+            local auto_loads = http_service:JSONDecode(readfile(library.cheatname..'/'..library.gamename..'/configs/autoload/'.."autoloads.json"))
             auto_loads[tostring(game.GameId)] = name
         
-            writefile(library.cheatname..'/'..library.gamename..'/configs/autoload/'.."autoloads".. library.fileext, http_service:JSONEncode(auto_loads))
+            writefile(library.cheatname..'/'..library.gamename..'/configs/autoload/'.."autoloads.json", http_service:JSONEncode(auto_loads))
         end
         
         function library:remove_from_auto_load()
             if not library:get_config('autoload/autoloads'.. library.fileext) then
-                writefile(library.cheatname..'/'..library.gamename..'/configs/autoload/'.."autoloads".. library.fileext, http_service:JSONEncode({}))
+                writefile(library.cheatname..'/'..library.gamename..'/configs/autoload/'.."autoloads.json", http_service:JSONEncode({}))
                 return
             end
         
-            local auto_loads = http_service:JSONDecode(readfile(library.cheatname..'/'..library.gamename..'/configs/autoload/'.."autoloads".. library.fileext))
+            local auto_loads = http_service:JSONDecode(readfile(library.cheatname..'/'..library.gamename..'/configs/autoload/'.."autoloads.json"))
             auto_loads[tostring(game.GameId)] = nil
         
-            writefile(library.cheatname..'/'..library.gamename..'/configs/autoload/'.."autoloads".. library.fileext, http_service:JSONEncode(auto_loads))
+            writefile(library.cheatname..'/'..library.gamename..'/configs/autoload/'.."autoloads.json", http_service:JSONEncode(auto_loads))
         end
         
         function library:auto_load_config()
             if not library:get_config('autoload/autoloads'.. library.fileext) then
-                writefile(library.cheatname..'/'..library.gamename..'/configs/autoload/'.."autoloads".. library.fileext, http_service:JSONEncode({}))
+                writefile(library.cheatname..'/'..library.gamename..'/configs/autoload/'.."autoloads.json", http_service:JSONEncode({}))
             end
         
-            local auto_loads = http_service:JSONDecode(readfile(library.cheatname..'/'..library.gamename..'/configs/autoload/'.."autoloads".. library.fileext))
+            local auto_loads = http_service:JSONDecode(readfile(library.cheatname..'/'..library.gamename..'/configs/autoload/'.."autoloads.json"))
             local auto_load = auto_loads[tostring(game.GameId)]
         
             if table.find(library:get_configs(), auto_load) then
@@ -5466,12 +5467,8 @@ function library:CreateConfigTab(window)
         GetService("VoiceChatService"):joinVoice()
     end})
 
-    config:button({name = "Autoload", callback = function()
-        library:add_to_auto_load(flags["config_name_list"])
-    end})
-
-    config:button({name = "Remove Autoload", callback = function()
-        library:remove_from_auto_load(flags["config_name_list"])
+    config:button({name = "Unload Menu", callback = function()
+        library:unload()
     end})
 
     local configs_section = configs:section({name = "Configuration System", side = "left"})
@@ -5520,12 +5517,15 @@ function library:CreateConfigTab(window)
         })
     end})
 
-    configs_section:button({name = "Unload Menu", callback = function()
-        library:unload()
+    configs_section:button({name = "Add Autoload", callback = function()
+        library:add_to_auto_load(flags["config_name_list"])
+    end})
+
+    configs_section:button({name = "Remove Autoload", callback = function()
+        library:remove_from_auto_load(flags["config_name_list"])
     end})
 
     library.config_holder:refresh_options(library:get_configs())
-    task.wait(1)
     library:auto_load_config()
 end
 
