@@ -5526,9 +5526,9 @@ function library:CreateConfigTab(window)
     end})
 
     library.config_holder:refresh_options(library:get_configs())
-    library:auto_load_config()
 end
 
 library.gui.Parent = library.folder
+library:auto_load_config()
 getgenv().init = library
 return library
