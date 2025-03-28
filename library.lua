@@ -2321,7 +2321,7 @@ end
 
             function cfg.toggle_playerlist(bool) 
                 playerlist.Visible = bool 
-            end
+            end   
             
             function cfg.toggle_watermark(bool) 
                 __holder.Visible = bool
