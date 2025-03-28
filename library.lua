@@ -116,58 +116,55 @@ end
     }
 
     local keys = {
-        [Enum.KeyCode.LeftShift] = "LS",
-        [Enum.KeyCode.RightShift] = "RS",
-        [Enum.KeyCode.LeftControl] = "LC",
-        [Enum.KeyCode.RightControl] = "RC",
-        [Enum.KeyCode.Insert] = "INS",
-        [Enum.KeyCode.Backspace] = "BS",
-        [Enum.KeyCode.Return] = "Ent",
-        [Enum.KeyCode.LeftAlt] = "LA",
-        [Enum.KeyCode.RightAlt] = "RA",
-        [Enum.KeyCode.CapsLock] = "CAPS",
-        [Enum.KeyCode.One] = "1",
-        [Enum.KeyCode.Two] = "2",
-        [Enum.KeyCode.Three] = "3",
-        [Enum.KeyCode.Four] = "4",
-        [Enum.KeyCode.Five] = "5",
-        [Enum.KeyCode.Six] = "6",
-        [Enum.KeyCode.Seven] = "7",
-        [Enum.KeyCode.Eight] = "8",
-        [Enum.KeyCode.Nine] = "9",
-        [Enum.KeyCode.Zero] = "0",
-        [Enum.KeyCode.KeypadOne] = "Num1",
-        [Enum.KeyCode.KeypadTwo] = "Num2",
-        [Enum.KeyCode.KeypadThree] = "Num3",
-        [Enum.KeyCode.KeypadFour] = "Num4",
-        [Enum.KeyCode.KeypadFive] = "Num5",
-        [Enum.KeyCode.KeypadSix] = "Num6",
-        [Enum.KeyCode.KeypadSeven] = "Num7",
-        [Enum.KeyCode.KeypadEight] = "Num8",
-        [Enum.KeyCode.KeypadNine] = "Num9",
-        [Enum.KeyCode.KeypadZero] = "Num0",
-        [Enum.KeyCode.Minus] = "-",
-        [Enum.KeyCode.Equals] = "=",
-        [Enum.KeyCode.Tilde] = "~",
-        [Enum.KeyCode.LeftBracket] = "[",
-        [Enum.KeyCode.RightBracket] = "]",
-        [Enum.KeyCode.RightParenthesis] = ")",
-        [Enum.KeyCode.LeftParenthesis] = "(",
-        [Enum.KeyCode.Semicolon] = ",",
-        [Enum.KeyCode.Quote] = "'",
-        [Enum.KeyCode.BackSlash] = "\\",
-        [Enum.KeyCode.Comma] = ",",
-        [Enum.KeyCode.Period] = ".",
-        [Enum.KeyCode.Slash] = "/",
-        [Enum.KeyCode.Asterisk] = "*",
-        [Enum.KeyCode.Plus] = "+",
-        [Enum.KeyCode.Period] = ".",
-        [Enum.KeyCode.Backquote] = "`",
-        [Enum.UserInputType.MouseButton1] = "MB1",
-        [Enum.UserInputType.MouseButton2] = "MB2",
-        [Enum.UserInputType.MouseButton3] = "MB3",
-        [Enum.KeyCode.Escape] = "ESC",
-        [Enum.KeyCode.Space] = "SPC",
+		[Enum.KeyCode.Space] = "Space",
+		[Enum.KeyCode.Return] = "Return",
+		[Enum.KeyCode.LeftShift] = "LShift",
+		[Enum.KeyCode.RightShift] = "RShift",
+		[Enum.KeyCode.LeftControl] = "LCtrl",
+		[Enum.KeyCode.RightControl] = "RCtrl",
+		[Enum.KeyCode.LeftAlt] = "LAlt",
+		[Enum.KeyCode.RightAlt] = "RAlt",
+		[Enum.KeyCode.CapsLock] = "CAPS",
+		[Enum.KeyCode.One] = "1",
+		[Enum.KeyCode.Two] = "2",
+		[Enum.KeyCode.Three] = "3",
+		[Enum.KeyCode.Four] = "4",
+		[Enum.KeyCode.Five] = "5",
+		[Enum.KeyCode.Six] = "6",
+		[Enum.KeyCode.Seven] = "7",
+		[Enum.KeyCode.Eight] = "8",
+		[Enum.KeyCode.Nine] = "9",
+		[Enum.KeyCode.Zero] = "0",
+		[Enum.KeyCode.KeypadOne] = "Num1",
+		[Enum.KeyCode.KeypadTwo] = "Num2",
+		[Enum.KeyCode.KeypadThree] = "Num3",
+		[Enum.KeyCode.KeypadFour] = "Num4",
+		[Enum.KeyCode.KeypadFive] = "Num5",
+		[Enum.KeyCode.KeypadSix] = "Num6",
+		[Enum.KeyCode.KeypadSeven] = "Num7",
+		[Enum.KeyCode.KeypadEight] = "Num8",
+		[Enum.KeyCode.KeypadNine] = "Num9",
+		[Enum.KeyCode.KeypadZero] = "Num0",
+		[Enum.KeyCode.Minus] = "-",
+		[Enum.KeyCode.Equals] = "=",
+		[Enum.KeyCode.Tilde] = "~",
+		[Enum.KeyCode.LeftBracket] = "[",
+		[Enum.KeyCode.RightBracket] = "]",
+		[Enum.KeyCode.RightParenthesis] = ")",
+		[Enum.KeyCode.LeftParenthesis] = "(",
+		[Enum.KeyCode.Semicolon] = ",",
+		[Enum.KeyCode.Quote] = "'",
+		[Enum.KeyCode.BackSlash] = "\\",
+		[Enum.KeyCode.Comma] = ",",
+		[Enum.KeyCode.Period] = ".",
+		[Enum.KeyCode.Slash] = "/",
+		[Enum.KeyCode.Asterisk] = "*",
+		[Enum.KeyCode.Plus] = "+",
+		[Enum.KeyCode.Period] = ".",
+		[Enum.KeyCode.Backquote] = "`",
+		[Enum.UserInputType.MouseButton1] = "MB1",
+		[Enum.UserInputType.MouseButton2] = "MB2",
+		[Enum.UserInputType.MouseButton3] = "MB3"
     }
         
     library.__index = library
@@ -510,25 +507,24 @@ end
 
     library.gui = library:create("ScreenGui", {
         Enabled = true,
-        Parent = rs,
+        Parent = library.folder,
         Name = "Menu :3",
         DisplayOrder = 2, 
         ZIndexBehavior = 1, 
     })
 
     library:connection(players.LocalPlayer.CharacterRemoving, function()
-        if library.gui then
-            library.gui.Parent = rs
+        if library.folder then
+            library.folder.Parent = rs
         end
     end)
 
     library:connection(players.LocalPlayer.CharacterAdded, function()
-        if library.gui and library.gui.Parent == rs then
-            library.folder = Instance.new("Folder")
-            library.folder.Name = "Menu"
-            library.folder.Parent = playergui
-            library.gui.Parent = library.folder
-        end
+		repeat task.wait() until playergui:FindFirstChild("Framework")
+
+		if library.folder and library.folder.Parent == rs then
+			library.folder.Parent = playergui
+		end
     end)
     
     -- library functions 
@@ -2325,7 +2321,7 @@ end
 
             function cfg.toggle_playerlist(bool) 
                 playerlist.Visible = bool 
-            end   
+            end
             
             function cfg.toggle_watermark(bool) 
                 __holder.Visible = bool
@@ -5526,9 +5522,8 @@ function library:CreateConfigTab(window)
     end})
 
     library.config_holder:refresh_options(library:get_configs())
+    library:auto_load_config()
 end
 
-library.gui.Parent = library.folder
-library:auto_load_config()
 getgenv().init = library
 return library
