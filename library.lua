@@ -542,13 +542,13 @@ end
                     Parent = library.gui,
                     Name = "",
                     BackgroundTransparency = 1,
-                    Position = UDim2.new(1, 20, 0, 20),
+                    Position = UDim2.new(0, 20, 0, 20),
                     BorderColor3 = Color3.fromRGB(19, 19, 19),
                     ZIndex = 2,
                     AutomaticSize = Enum.AutomaticSize.X,
                     BackgroundColor3 = Color3.fromRGB(40, 40, 40)
                 })
-            
+                
                 local inline1 = library:create("Frame", {
                     Parent = __holder,
                     Name = "",
@@ -625,7 +625,7 @@ end
                     FontFace = library.font,
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(0, 0, 0),
-                    Text = "Cheat Menu",
+                    Text = "ledger.live",
                     TextStrokeTransparency = 0.5,
                     Size = UDim2.new(0, 0, 1, 0),
                     Position = UDim2.new(0, 8, 0, 0),
@@ -645,7 +645,7 @@ end
                         ColorSequenceKeypoint.new(0.01, themes.preset.accent),
                         ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 255))
                     }
-                })
+                })                
                 
                 local UIPadding = library:create("UIPadding", {
                     Parent = tabs,

@@ -53,79 +53,86 @@ This is how you import the library through the repository.
 * Section
   ```lua
   local section = tab:section({
-    name = "local",
+    name = "Section",
   })
   ```
 
 * Toggle:
    ```lua
-   section:toggle({
-        enabled = properties.enabled or nil,
-        name = "Toggle",
-        flag = "ToggleFlag",
-        default = false,
-        callback = function(bool)
-            print(bool)
-            print(flags["ToggleFlag"])
-        end,
-    })
+  section:toggle({
+      name = "Example Toggle",
+      flag = "example_toggle",
+      default = false,
+      callback = function(bool)
+          print(bool)
+          print(flags["example_toggle"])
+      end,
+  })
    ```
 
 * Dropdown
   ```lua
   section:dropdown({
-        name = "activation", 
-        flag = "legit_aimassistactivation", 
-        items = {"mouse 1", "mouse 2", "always"}, 
-        multi = false, 
-        callback = function(option)
-            print(option) -- Will return a table if you set multi to true, allowing you to select multiple items
-            print(flags["legit_aimassistactivation"])
-        end
-    })
+      name = "Example Dropdown", 
+      flag = "example_dropdown", 
+      items = {"One", "Two", "Three"}, 
+      multi = false, 
+      callback = function(option)
+          print(option) -- Will return a table if you set multi to true, allowing you to select multiple items
+          print(flags["example_dropdown"])
+      end
+  })
   ```
 
 * Slider
   ```lua
   section:slider({
-        name = "drop prediction inaccuracy", 
-        suffix = "%", 
-        flag = "legit_bulletdropaccuracy", 
-        default = 90, 
-        min = 0, 
-        max = 100, 
-        interval = 0.5,
-        callback = function(num)
-            print(num)
-        end
-    })
+      name = "Example Slider", 
+      suffix = "%", 
+      flag = "example_slider", 
+      default = 90, 
+      min = 0, 
+      max = 100, 
+      interval = 0.5,
+      callback = function(num)
+          print(num)
+      end
+  })
   ```
 
 * Colorpicker
   ```lua
-  -- For the colorpicker to be seperate, include a name to it and parent it to the section using section:colorpicker
-  -- Else you should do toggle:colorpicker({}) in order to parent it to a toggle.
   section:colorpicker({
-    name = "Hello!",
-    flag = "enemy_healthnumbercolor",
+    name = "Example Colorpicker",
+    flag = "example_colorpicker",
     color = Color3.new(1, 1, 1),
     callback = function(color, alpha)
         print(color, alpha)
-        print(flags["enemy_healthnumbercolor"].Color, flags["enemy_healthnumbercolor"].Transparency)
+        print(flags["example_colorpicker"].Color, flags["example_colorpicker"].Transparency)
     end
   })
   ```
 
 * Keybinds
   ```lua
-  -- Same logic with the parenting as the colorpicker, same rules apply.
+  -- to get the active state of the keybind from flags use ".active".
   section:keybind({
-    name = "UI Bind",
-    flags = "Keybind Flag",
-    default = Enum.KeyCode.End, -- Leave empty for no key.
+    text = "Example Keybind",
+    flags = "example_keybind",
+    mode = 'toggle',
+    bind = 'Q',
     callback = function(bool)
         print(bool)
-        print(flags["Keybind Flag"].Active)
     end
   })
+  ```
+
+* Configs/Settings
+  ```lua
+  library:CreateConfigTab(window)
+  ```
+
+* Open Tab
+  ```lua
+  library:CreateConfigTab(window)
   ```
