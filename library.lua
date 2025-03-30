@@ -15,6 +15,7 @@ local stats = GetService("Stats")
 local playergui = players.LocalPlayer:FindFirstChild('PlayerGui')
 local debris = GetService("Debris")
 local tween_service = GetService("TweenService")
+local rs = GetService("ReplicatedStorage")
 
 local vec2 = Vector2.new
 local vec3 = Vector3.new
@@ -514,12 +515,12 @@ end
 
     library:connection(players.LocalPlayer.CharacterRemoving, function()
         if library.folder then
-            library.folder.Parent = nil
+            library.folder.Parent = rs
         end
     end)
 
     library:connection(players.LocalPlayer.CharacterAdded, function()
-		if library.folder and library.folder.Parent == nil then
+		if library.folder and library.folder.Parent == rs then
 			library.folder.Parent = playergui
 		end
     end)
