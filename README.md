@@ -136,3 +136,10 @@ This is how you import the library through the repository.
   ```lua
   library:CreateConfigTab(window)
   ```
+
+* Unload Callback
+  ```lua
+  library.unload_callback = function()
+      print('unloaded cheat menu')
+  end
+  ```
