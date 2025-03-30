@@ -4600,12 +4600,12 @@ end
 
             cfg.saved_color = hsv(h, s, v)
 
-            copy.MouseButton1Down:Connect(function()
-                setclipboard(library:color_to_hex(cfg.color))
-                library:notification({text = 'Color copied to clipboard as (HEX)'})
-            end)
+            -- copy.MouseButton1Down:Connect(function()
+            --     setclipboard(library:color_to_hex(cfg.color))
+            --     library:notification({text = 'Color copied to clipboard as (HEX)'})
+            -- end)
 
-            paste.MouseButton1Down:Connect(function()
+            copy.MouseButton1Down:Connect(function()
                 local clipboard = getclipboard()
                 local colorMatch = clipboard:match("^#?([0-9a-fA-F]{6})$")
                 
