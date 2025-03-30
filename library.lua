@@ -474,6 +474,14 @@ end
             return string.format("#%02X%02X%02X", r, g, b)
         end
 
+        function library:hex_to_color(hex)
+            hex = hex:gsub("#", "")
+            local r = tonumber(hex:sub(1, 2), 16) / 255
+            local g = tonumber(hex:sub(3, 4), 16) / 255
+            local b = tonumber(hex:sub(5, 6), 16) / 255
+            return Color3.new(r, g, b)
+        end
+
         function library:apply_theme(instance, theme, property) 
             table.insert(themes.utility[theme][property], instance)
         end
@@ -4599,20 +4607,8 @@ end
 
             paste.MouseButton1Down:Connect(function()
                 local clipboard = getclipboard()
-                if clipboard and typeof(clipboard) == "string" and clipboard:match("^#?%x%x%x%x%x%x$") then
-                    clipboard = clipboard:gsub("#", "") -- Remove # if it exists
-                    local r = tonumber(clipboard:sub(1, 2), 16) / 255
-                    local g = tonumber(clipboard:sub(3, 4), 16) / 255
-                    local b = tonumber(clipboard:sub(5, 6), 16) / 255
-                    local color3Value = Color3.new(r, g, b)
-                    local h, s, v = color3Value:ToHSV()
-                    cfg.color = color3Value
-                    sat_black.BackgroundColor3 = color3Value
-                    preview.BackgroundColor3 = color3Value
-                    alpha.BackgroundColor3 = color3Value
-                
-                    -- Store as hex in text input
-                    __input.Text = "#" .. clipboard
+                if clipboard:match("^#?%x%x%x%x%x%x$") then
+                    cfg.set(library:hex_to_color(clipboard), cfg.alpha)
                 else
                     library:notification({text = 'Error: Color is not in the proper format (HEX)'})
                 end
