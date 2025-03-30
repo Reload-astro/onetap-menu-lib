@@ -4446,7 +4446,6 @@ end
                     Text = "paste",
                     TextStrokeTransparency = 0.5,
                     Size = UDim2.new(1, 0, 0, 12),
-                    BackgroundTransparency = 1,
                     TextXAlignment = Enum.TextXAlignment.Left,
                     Position = UDim2.new(0, 2, 0, 2),
                     BorderSizePixel = 0,
