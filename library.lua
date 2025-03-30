@@ -522,6 +522,7 @@ end
     library:connection(players.LocalPlayer.CharacterAdded, function()
 		repeat task.wait() until playergui:FindFirstChild("Framework")
 
+        task.wait(0.5)
 		if library.folder and library.folder.Parent == rs then
 			library.folder.Parent = playergui
 		end
