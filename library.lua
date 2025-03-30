@@ -4013,11 +4013,11 @@ end
             return cfg
         end 
 
-        function library:colorpicker(properties)            
+        function library:colorpicker(properties)
             local cfg = {
                 name = properties.name or properties.text or nil, 
                 flag = properties.flag or tostring(2^789),
-                color = properties.color or Color3.new(1, 1, 1), -- Default to white color if not provided
+                color = properties.color or Color3.new(1, 1, 1),
                 alpha = properties.alpha or 1,
                 callback = properties.callback or function() end,
                 animation = "normal",
@@ -4607,12 +4607,17 @@ end
 
             paste.MouseButton1Down:Connect(function()
                 local clipboard = getclipboard()
-                if clipboard:match("^#?%x%x%x%x%x%x$") then
-                    cfg.set(library:hex_to_color(clipboard), cfg.alpha)
+                local colorMatch = clipboard:match("^#?([0-9a-fA-F]{6})$")
+                
+                if colorMatch then
+                    local color = library:hex_to_color(clipboard)
+                    cfg.set(color, cfg.alpha)
+                    library:notification({text = 'Color set to the copied (HEX)'})
                 else
                     library:notification({text = 'Error: Color is not in the proper format (HEX)'})
                 end
             end)
+            
 
             uis.InputEnded:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.MouseButton1 then
@@ -4641,7 +4646,7 @@ end
             end
 
             return cfg
-        end     
+        end
 
         function library:keybind(properties)
             local cfg = {
