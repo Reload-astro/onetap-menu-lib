@@ -508,7 +508,7 @@ end
     library.gui = library:create("ScreenGui", {
         Enabled = true,
         Parent = library.folder,
-        Name = "MobileLayout",
+        Name = "MobileLayout",-- this is done to bypass dahoods tweening (its cancer)
         DisplayOrder = 2, 
         ZIndexBehavior = 1, 
     })
@@ -4393,6 +4393,12 @@ end
                     BorderSizePixel = 0,
                     BackgroundColor3 = Color3.fromRGB(50, 50, 50)
                 })
+
+                local UIPadding = library:create("UIPadding", {
+                    Parent = options,
+                    Name = "",
+                    PaddingBottom = UDim.new(0, 4)
+                })
                 
                 local UIListLayout = library:create("UIListLayout", {
                     Parent = options,
@@ -4401,13 +4407,13 @@ end
                     SortOrder = Enum.SortOrder.LayoutOrder
                 })
                 
-                local normal = library:create("TextButton", {
+                local copy = library:create("TextButton", {
                     Parent = options,
                     Name = "",
                     FontFace = library.font,
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(56, 56, 56),
-                    Text = "normal",
+                    Text = "copy",
                     TextStrokeTransparency = 0.5,
                     Size = UDim2.new(1, 0, 0, 12),
                     TextXAlignment = Enum.TextXAlignment.Left,
@@ -4418,43 +4424,19 @@ end
                 })
                 
                 local UIPadding = library:create("UIPadding", {
-                    Parent = normal,
+                    Parent = copy,
                     Name = "",
                     PaddingBottom = UDim.new(0, 1),
                     PaddingLeft = UDim.new(0, 5)
                 })
                 
-                local rainbow = library:create("TextButton", {
+                local paste = library:create("TextButton", {
                     Parent = options,
                     Name = "",
                     FontFace = library.font,
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(56, 56, 56),
-                    Text = "rainbow",
-                    TextStrokeTransparency = 0.5,
-                    Size = UDim2.new(1, 0, 0, 12),
-                    BackgroundTransparency = 1,
-                    TextXAlignment = Enum.TextXAlignment.Left,
-                    Position = UDim2.new(0, 2, 0, 2),
-                    BorderSizePixel = 0,
-                    TextSize = 12,
-                    BackgroundColor3 = Color3.fromRGB(65, 65, 65)
-                })
-                
-                local UIPadding = library:create("UIPadding", {
-                    Parent = rainbow,
-                    Name = "",
-                    PaddingBottom = UDim.new(0, 1),
-                    PaddingLeft = UDim.new(0, 5)
-                })
-                
-                local fade = library:create("TextButton", {
-                    Parent = options,
-                    Name = "",
-                    FontFace = library.font,
-                    TextColor3 = Color3.fromRGB(170, 170, 170),
-                    BorderColor3 = Color3.fromRGB(56, 56, 56),
-                    Text = "fade",
+                    Text = "paste",
                     TextStrokeTransparency = 0.5,
                     Size = UDim2.new(1, 0, 0, 12),
                     BackgroundTransparency = 1,
@@ -4466,41 +4448,11 @@ end
                 })
                 
                 local UIPadding = library:create("UIPadding", {
-                    Parent = fade,
+                    Parent = paste,
                     Name = "",
                     PaddingBottom = UDim.new(0, 1),
                     PaddingLeft = UDim.new(0, 5)
                 })
-                
-                local UIPadding = library:create("UIPadding", {
-                    Parent = options,
-                    Name = "",
-                    PaddingBottom = UDim.new(0, 4)
-                })
-                
-                local fade_alpha = library:create("TextButton", {
-                    Parent = options,
-                    Name = "",
-                    FontFace = library.font,
-                    TextColor3 = Color3.fromRGB(170, 170, 170),
-                    BorderColor3 = Color3.fromRGB(56, 56, 56),
-                    Text = "fade alpha",
-                    TextStrokeTransparency = 0.5,
-                    Size = UDim2.new(1, 0, 0, 12),
-                    BackgroundTransparency = 1,
-                    TextXAlignment = Enum.TextXAlignment.Left,
-                    Position = UDim2.new(0, 2, 0, 2),
-                    BorderSizePixel = 0,
-                    TextSize = 12,
-                    BackgroundColor3 = Color3.fromRGB(65, 65, 65)
-                })
-                
-                local UIPadding = library:create("UIPadding", {
-                    Parent = fade_alpha,
-                    Name = "",
-                    PaddingBottom = UDim.new(0, 1),
-                    PaddingLeft = UDim.new(0, 5)
-                })            
             -- 
 
             function cfg.set_visible(bool)
@@ -4633,43 +4585,21 @@ end
             end)
 
             cfg.saved_color = hsv(h, s, v)
-            local selected = normal
-            flags[cfg.flag]["animation"] = "normal"
+            local copiedColor = nil
 
-            rainbow.MouseButton1Down:Connect(function()
-                selected.BackgroundTransparency = 1; 
-                selected = rainbow
-                rainbow.BackgroundTransparency = 0 
-
-                flags[cfg.flag]["animation"] = "rainbow"
-                cfg.saved_color = hsv(s,s,v)
+            copy.MouseButton1Click:Connect(function()
+                copiedColor = Color3.new(h, s, v)
             end)
-
-            fade_alpha.MouseButton1Down:Connect(function()
-                selected.BackgroundTransparency = 1; 
-                selected = fade_alpha
-                fade_alpha.BackgroundTransparency = 0 
-
-                flags[cfg.flag]["animation"] = "fade_alpha"
-                cfg.saved_color = hsv(s,s,v)
-            end)
-
-            fade.MouseButton1Down:Connect(function()
-                selected.BackgroundTransparency = 1; 
-                selected = fade
-                fade.BackgroundTransparency = 0 
-
-                flags[cfg.flag]["animation"] = "fade"
-                cfg.saved_color = hsv(s,s,v)
-            end)
-
-            normal.MouseButton1Down:Connect(function()
-                selected.BackgroundTransparency = 1; 
-                selected = normal
-                normal.BackgroundTransparency = 0 
-
-                flags[cfg.flag]["animation"] = "normal"
-                cfg.set(cfg.saved_color)
+        
+            paste.MouseButton1Click:Connect(function()
+                if copiedColor then
+                    h, s, v = copiedColor:ToHSV()
+                    cfg.color = copiedColor
+                    sat_black.BackgroundColor3 = copiedColor
+                    preview.BackgroundColor3 = copiedColor
+                    alpha.BackgroundColor3 = copiedColor
+                    __input.Text = string.format("%d, %d, %d, %.2f", copiedColor.R * 255, copiedColor.G * 255, copiedColor.B * 255, a)
+                end
             end)
 
             uis.InputEnded:Connect(function(input)
@@ -4691,22 +4621,6 @@ end
             self.previous_holder = parent
 
             library.config_flags[cfg.flag] = cfg.set
-
-            task.spawn(function()
-                while true do 
-                    if selected ~= "normal" then 
-                        cfg.set(
-                            hsv(
-                                selected == "rainbow" and library.sin or h, 
-                                selected == "rainbow" and 1 or s, 
-                                selected == "fade" and library.sin or v
-                            )
-                            , selected == "fade_alpha" and library.sin
-                        )
-                    end 
-                    task.wait() 
-                end     
-            end)    
             
             for k, v in pairs(library) do
                 if type(v) == "function" then
@@ -4715,7 +4629,7 @@ end
             end
 
             return cfg
-        end     
+        end
 
         function library:keybind(properties)
             local cfg = {
