@@ -47,11 +47,13 @@ end
 
 -- library init
     local library = {
+        unload_callback = function() end,
         flags = {},
         config_flags = {},
         connections = {},   
         notifications = {}, 
         instances = {},
+        drawings = {},
         coroutines = {},
         main_frame = {}, 
         config_holder = nil,
@@ -221,7 +223,13 @@ end
 
             for _, item in library.instances do 
                 item:Destroy()
-            end 
+            end
+
+            for _, draw in library.drawings do 
+                draw:Destroy()
+            end
+
+            library.unload_callback()
 
             getgenv().init = nil
         end
