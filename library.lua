@@ -467,6 +467,13 @@ end
             return math.floor(number * multiplier + 0.5) / multiplier
         end 
 
+        function library:color_to_hex(color)
+            local r = math.floor(color.R * 255)
+            local g = math.floor(color.G * 255)
+            local b = math.floor(color.B * 255)
+            return string.format("#%02X%02X%02X", r, g, b)
+        end
+
         function library:apply_theme(instance, theme, property) 
             table.insert(themes.utility[theme][property], instance)
         end
@@ -4556,7 +4563,7 @@ end
                     cfg.set(rgb(r, g, b), a)
                 end 
             end)
-            
+
             function cfg.update_color() 
                 local mouse = uis:GetMouseLocation() 
 
@@ -4585,20 +4592,18 @@ end
             end)
 
             cfg.saved_color = hsv(h, s, v)
-            local copiedColor = nil
 
-            copy.MouseButton1Click:Connect(function()
-                copiedColor = Color3.new(h, s, v)
+            copy.MouseButton1Down:Connect(function()
+                setclipboard(library:color_to_hex(cfg.color))
+                library:notification({text = 'Color copied to clipboard as (HEX)'})
             end)
-        
-            paste.MouseButton1Click:Connect(function()
-                if copiedColor then
-                    h, s, v = copiedColor:ToHSV()
-                    cfg.color = copiedColor
-                    sat_black.BackgroundColor3 = copiedColor
-                    preview.BackgroundColor3 = copiedColor
-                    alpha.BackgroundColor3 = copiedColor
-                    __input.Text = string.format("%d, %d, %d, %.2f", copiedColor.R * 255, copiedColor.G * 255, copiedColor.B * 255, a)
+
+            paste.MouseButton1Down:Connect(function()
+                local clipboard = getclipboard()
+                if clipboard:match("^#?%x%x%x%x%x%x$") then
+                    cfg.set(hex(clipboard), cfg.alpha)
+                else
+                    library:notification({text = 'Error: Color is not in the proper format (HEX)'})
                 end
             end)
 
@@ -4629,7 +4634,7 @@ end
             end
 
             return cfg
-        end
+        end     
 
         function library:keybind(properties)
             local cfg = {
