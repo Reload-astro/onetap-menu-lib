@@ -6,14 +6,10 @@ end
 
 local uis = GetService("UserInputService") 
 local players = GetService("Players") 
-local ws = GetService("Workspace")
 local http_service = GetService("HttpService")
 local gui_service = GetService("GuiService")
-local lighting = GetService("Lighting")
 local run = GetService("RunService")
-local stats = GetService("Stats")
 local playergui = players.LocalPlayer:FindFirstChild('PlayerGui')
-local debris = GetService("Debris")
 local tween_service = GetService("TweenService")
 local rs = GetService("ReplicatedStorage")
 
