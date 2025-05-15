@@ -1579,8 +1579,12 @@ end
                 local selected_player; 
                 local player_buttons = {}
 
-                function library.get_priority()
-                    return player_buttons[selected_player.Name].priority.Text
+                function library.get_priority(player)
+                    if player then
+                        return player_buttons[player.Name].priority.Text
+                    else
+                        return player_buttons[selected_player.Name].priority.Text
+                    end
                 end
 
                 function library.get_selected()
@@ -2052,7 +2056,7 @@ end
                         FontFace = library.font,
                         TextColor3 = Color3.fromRGB(180, 180, 180),
                         BorderColor3 = Color3.fromRGB(0, 0, 0),
-                        Text = player.Team and tostring(player.Team) or "None",
+                        Text = player.DisplayName,
                         BackgroundTransparency = 1,
                         TextXAlignment = Enum.TextXAlignment.Left,
                         BorderSizePixel = 0,
