@@ -1579,8 +1579,12 @@ end
                 local selected_player; 
                 local player_buttons = {}
 
-                function library.get_priority(player)
-                    return player_buttons[player.Name].priority.Text
+                function library.get_priority()
+                    return player_buttons[selected_player.Name].priority.Text
+                end
+
+                function library.get_selected()
+                    return selected_player
                 end 
 
                 local playerlist = library:create("Frame", {
@@ -1951,34 +1955,6 @@ end
                     player_buttons[selected_player.Name].priority.TextColor3 = rgb(30, 255, 0)
                 end)
                 
-                local button_inline = library:create("Frame", {
-                    Parent = Frame,
-                    Name = "",
-                    Position = UDim2.new(0, -15, 0, 2),
-                    BorderColor3 = Color3.fromRGB(19, 19, 19),
-                    Size = UDim2.new(1, -26, 0, 16),
-                    BorderSizePixel = 0,
-                    BackgroundColor3 = Color3.fromRGB(8, 8, 8)
-                })
-                
-                local button = library:create("TextButton", {
-                    Parent = button_inline,
-                    Name = "",
-                    FontFace = library.font,
-                    TextColor3 = Color3.fromRGB(170, 170, 170),
-                    BorderColor3 = Color3.fromRGB(56, 56, 56),
-                    Text = "Teleport",
-                    TextStrokeTransparency = 0.5,
-                    Position = UDim2.new(0, 2, 0, 2),
-                    Size = UDim2.new(1, -4, 1, -4),
-                    TextSize = 12,
-                    BackgroundColor3 = Color3.fromRGB(38, 38, 38)
-                })
-
-                button.MouseButton1Click:Connect(function()
-                    players.LocalPlayer.Character.HumanoidRootPart.CFrame = selected_player.Character.HumanoidRootPart.CFrame
-                end)
-                
                 local UIListLayout = library:create("UIListLayout", {
                     Parent = Frame,
                     Name = "",
@@ -2027,7 +2003,7 @@ end
                     BorderSizePixel = 0,
                     SliceCenter = Rect.new(Vector2.new(21, 21), Vector2.new(79, 79))
                 })  
-
+                
                 library:apply_theme(glow, "accent", "ImageColor3") 
 
                 local function create_player(player)
@@ -2164,24 +2140,30 @@ end
 
                         selected_button = TextButton
                         selected_player = player 
-                        TextButton.BackgroundTransparency = .85
+                        TextButton.BackgroundTransparency = 1.85
 
-                        priority_label.Text = "Priority: " .. library.get_priority(player)
+                        priority_label.Text = "Priority: " .. library.get_priority()
                         name_label.Text = "Name: " .. player.Name 
                         display_name_label.Text = "Display: " .. player.DisplayName 
                     end)
                 end 
                 
                 for _, player in next, players:GetPlayers() do 
-                    create_player(player)
+                    if player.Name ~= players.LocalPlayer.Name then
+                        create_player(player) 
+                    end
                 end 
 
                 library:connection(players.PlayerAdded, function(player)
-                    create_player(player)
+                    if player.Name ~= players.LocalPlayer.Name then
+                        create_player(player) 
+                    end
                 end)
 
                 library:connection(players.PlayerRemoving, function(player)
-                    player_buttons[player.Name].instance:Destroy() 
+                    if player.Name ~= players.LocalPlayer.Name then
+                        player_buttons[player.Name].instance:Destroy() 
+                    end
                 end)
             -- 
             
@@ -2334,6 +2316,44 @@ end
             function cfg.toggle_list(bool) 
                 old_kblist.Visible = bool
                 cfg.keybind_active = bool
+            end
+
+            function cfg:add_button(properties)
+                local cfg = {
+                    callback = properties.callback or function() end, 
+                    name = properties.text or properties.name or "Button",
+                } 
+                local button_inline = library:create("Frame", {
+                    Parent = Frame,
+                    Name = "",
+                    Position = UDim2.new(0, -15, 0, 2),
+                    BorderColor3 = Color3.fromRGB(19, 19, 19),
+                    Size = UDim2.new(1, -26, 0, 16),
+                    BorderSizePixel = 0,
+                    BackgroundColor3 = Color3.fromRGB(8, 8, 8)
+                })
+                
+                local button = library:create("TextButton", {
+                    Parent = button_inline,
+                    Name = "",
+                    FontFace = library.font,
+                    TextColor3 = Color3.fromRGB(170, 170, 170),
+                    BorderColor3 = Color3.fromRGB(56, 56, 56),
+                    Text = cfg.name,
+                    TextStrokeTransparency = 0.5,
+                    Position = UDim2.new(0, 2, 0, 2),
+                    Size = UDim2.new(1, -4, 1, -4),
+                    TextSize = 12,
+                    BackgroundColor3 = Color3.fromRGB(38, 38, 38)
+                })
+
+                button.MouseButton1Click:Connect(function()
+                    cfg.callback()
+                end)
+            end
+
+            function cfg.add_toggle()
+                
             end
 
             function cfg.toggle_playerlist(bool) 
