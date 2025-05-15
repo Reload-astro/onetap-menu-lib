@@ -1599,7 +1599,7 @@ end
                     AnchorPoint = Vector2.new(0, 0),
                     Position = UDim2.new(0, inline1.AbsolutePosition.X - 358 - 8, 0, inline1.AbsolutePosition.Y + 1),
                     BorderColor3 = Color3.fromRGB(8, 8, 8),
-                    Size = UDim2.new(0, 358, 0, 628),
+                    Size = UDim2.new(0, 358, 0, 658),
                     BackgroundColor3 = Color3.fromRGB(56, 56, 56)
                 }) library:make_resizable(playerlist)
                 
