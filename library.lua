@@ -2374,6 +2374,7 @@ end
                     BorderSizePixel = 0,
                     BackgroundTransparency = 1,
                     TextXAlignment = Enum.TextXAlignment.Left,
+                    Position = UDim2.new(0, 15, 0, 0),
                     Size = UDim2.new(1, -26, 0, 12),
                     ZIndex = 1,
                     TextSize = 12,
