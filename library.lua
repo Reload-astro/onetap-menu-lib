@@ -2364,7 +2364,7 @@ end
                 }
 
                 local object = library:create("TextButton", {
-                    Parent = self.holder,
+                    Parent = Frame,
                     Name = "",
                     FontFace = library.font,
                     TextColor3 = Color3.fromRGB(170, 170, 170),
