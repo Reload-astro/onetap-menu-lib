@@ -2378,6 +2378,11 @@ end
                     TextSize = 12,
                     BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 })
+
+                library:create("UIPadding", {
+                    Parent = object,
+                    PaddingLeft = UDim.new(0, 15)
+                })
                 
                 local right_components = library:create("Frame", {
                     Parent = object,
