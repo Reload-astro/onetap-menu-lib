@@ -1938,7 +1938,7 @@ end
                     FontFace = library.font,
                     TextColor3 = Color3.fromRGB(170, 170, 170),
                     BorderColor3 = Color3.fromRGB(56, 56, 56),
-                    Text = "Friendly",
+                    Text = "Whitelist",
                     TextStrokeTransparency = 0.5,
                     Position = UDim2.new(0, 2, 0, 2),
                     Size = UDim2.new(1, -4, 1, -4),
@@ -1947,38 +1947,38 @@ end
                 })
 
                 button.MouseButton1Click:Connect(function()
-                    player_buttons[selected_player.Name].priority.Text = "Friendly"
-                    player_buttons[selected_player.Name].priority.TextColor3 = rgb(15, 179, 255)
+                    player_buttons[selected_player.Name].priority.Text = "Whitelisted"
+                    player_buttons[selected_player.Name].priority.TextColor3 = rgb(30, 255, 0)
                 end)
                 
-                local button_inline = library:create("Frame", {
-                    Parent = Frame,
-                    Name = "",
-                    Position = UDim2.new(0, -15, 0, 2),
-                    BorderColor3 = Color3.fromRGB(19, 19, 19),
-                    Size = UDim2.new(1, -26, 0, 16),
-                    BorderSizePixel = 0,
-                    BackgroundColor3 = Color3.fromRGB(8, 8, 8)
-                })
+                -- local button_inline = library:create("Frame", {
+                --     Parent = Frame,
+                --     Name = "",
+                --     Position = UDim2.new(0, -15, 0, 2),
+                --     BorderColor3 = Color3.fromRGB(19, 19, 19),
+                --     Size = UDim2.new(1, -26, 0, 16),
+                --     BorderSizePixel = 0,
+                --     BackgroundColor3 = Color3.fromRGB(8, 8, 8)
+                -- })
                 
-                local button = library:create("TextButton", {
-                    Parent = button_inline,
-                    Name = "",
-                    FontFace = library.font,
-                    TextColor3 = Color3.fromRGB(170, 170, 170),
-                    BorderColor3 = Color3.fromRGB(56, 56, 56),
-                    Text = "Enemy",
-                    TextStrokeTransparency = 0.5,
-                    Position = UDim2.new(0, 2, 0, 2),
-                    Size = UDim2.new(1, -4, 1, -4),
-                    TextSize = 12,
-                    BackgroundColor3 = Color3.fromRGB(38, 38, 38)
-                })
+                -- local button = library:create("TextButton", {
+                --     Parent = button_inline,
+                --     Name = "",
+                --     FontFace = library.font,
+                --     TextColor3 = Color3.fromRGB(170, 170, 170),
+                --     BorderColor3 = Color3.fromRGB(56, 56, 56),
+                --     Text = "Enemy",
+                --     TextStrokeTransparency = 0.5,
+                --     Position = UDim2.new(0, 2, 0, 2),
+                --     Size = UDim2.new(1, -4, 1, -4),
+                --     TextSize = 12,
+                --     BackgroundColor3 = Color3.fromRGB(38, 38, 38)
+                -- })
 
-                button.MouseButton1Click:Connect(function()
-                    player_buttons[selected_player.Name].priority.Text = "Enemy"
-                    player_buttons[selected_player.Name].priority.TextColor3 = rgb(255, 44, 44)
-                end)
+                -- button.MouseButton1Click:Connect(function()
+                --     player_buttons[selected_player.Name].priority.Text = "Enemy"
+                --     player_buttons[selected_player.Name].priority.TextColor3 = rgb(255, 44, 44)
+                -- end)
                 
                 local UIListLayout = library:create("UIListLayout", {
                     Parent = Frame,
