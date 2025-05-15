@@ -2323,6 +2323,7 @@ end
                     callback = properties.callback or function() end, 
                     name = properties.text or properties.name or "Button",
                 } 
+
                 local button_inline = library:create("Frame", {
                     Parent = Frame,
                     Name = "",
@@ -2348,12 +2349,156 @@ end
                 })
 
                 button.MouseButton1Click:Connect(function()
-                    cfg.callback()
+                    cfg.callback() 
                 end)
             end
 
-            function cfg.add_toggle()
+            function cfg:add_toggle(properties)
+                local cfg = {
+                    enabled = properties.enabled or nil,
+                    name = properties.name or properties.text or "Toggle",
+                    flag = properties.flag or tostring(math.random(1,9999999)),
+                    callback = properties.callback or function() end,
+                    default = properties.default or false,
+                    previous_holder = self
+                }
+
+                local object = library:create("TextButton", {
+                    Parent = self.holder,
+                    Name = "",
+                    FontFace = library.font,
+                    TextColor3 = Color3.fromRGB(170, 170, 170),
+                    BorderColor3 = Color3.fromRGB(0, 0, 0),
+                    Text = cfg.name,
+                    TextStrokeTransparency = 0.5,
+                    BorderSizePixel = 0,
+                    BackgroundTransparency = 1,
+                    TextXAlignment = Enum.TextXAlignment.Left,
+                    Size = UDim2.new(1, -26, 0, 12),
+                    ZIndex = 1,
+                    TextSize = 12,
+                    BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                })
                 
+                local right_components = library:create("Frame", {
+                    Parent = object,
+                    Name = "",
+                    Position = UDim2.new(1, 15, 0, 1),
+                    BorderColor3 = Color3.fromRGB(0, 0, 0),
+                    Size = UDim2.new(0, 0, 1, 0),
+                    BorderSizePixel = 0,
+                    BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                })
+
+                local list = library:create("UIListLayout", {
+                    Parent = right_components,
+                    Name = "",
+                    FillDirection = Enum.FillDirection.Horizontal,
+                    HorizontalAlignment = Enum.HorizontalAlignment.Right,
+                    Padding = UDim.new(0, 3),
+                    SortOrder = Enum.SortOrder.LayoutOrder
+                })
+                
+                local icon_inline = library:create("TextButton", {
+                    Parent = object,
+                    Name = "",
+                    Position = UDim2.new(0, -15, 0, 1),
+                    BorderColor3 = Color3.fromRGB(19, 19, 19),
+                    Size = UDim2.new(0, 10, 0, 10),
+                    BorderSizePixel = 0,
+                    Text = "", 
+                    AutoButtonColor = false, 
+                    BackgroundColor3 = Color3.fromRGB(8, 8, 8)
+                })
+                
+                local icon = library:create("Frame", {
+                    Parent = icon_inline,
+                    Name = "",
+                    Position = UDim2.new(0, 2, 0, 2),
+                    BorderColor3 = Color3.fromRGB(56, 56, 56),
+                    Size = UDim2.new(1, -4, 1, -4),
+                    BackgroundColor3 = Color3.fromRGB(22, 22, 22)
+                })
+
+                local icon_2 = library:create("Frame", {
+                    Parent = icon,
+                    Name = "",
+                    BorderColor3 = Color3.fromRGB(56, 56, 56),
+                    Size = UDim2.new(1, 0, 1, 0),
+                    BackgroundColor3 = themes.preset.accent
+                })
+                library:apply_theme(icon_2, "accent", "BackgroundColor3") 
+
+                local glow = library:create("ImageLabel", {
+                    Parent = icon_inline,
+                    Name = "",
+                    Visible = false, 
+                    ImageColor3 = themes.preset.accent,
+                    ScaleType = Enum.ScaleType.Slice,
+                    ImageTransparency = 0.75,
+                    BorderColor3 = Color3.fromRGB(0, 0, 0),
+                    BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+                    Image = "http://www.roblox.com/asset/?id=18245826428",
+                    BackgroundTransparency = 1,
+                    Position = UDim2.new(0, -12, 0, -12),
+                    Size = UDim2.new(1, 24, 1, 24),
+                    ZIndex = 2,
+                    BorderSizePixel = 0,
+                    SliceCenter = Rect.new(Vector2.new(21, 21), Vector2.new(79, 79))
+                })
+
+                library:apply_theme(glow, "accent", "ImageColor3") 
+            
+                local bottom_components = library:create("Frame", {
+                    Parent = object,
+                    Name = "",
+                    Visible = true,
+                    BorderColor3 = Color3.fromRGB(0, 0, 0),
+                    Position = UDim2.new(0, 0, 0, 13),
+                    Size = UDim2.new(1, 26, 0, 0),
+                    ZIndex = 2,
+                    BorderSizePixel = 0,
+                    BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                })
+                
+                local list = library:create("UIListLayout", {
+                    Parent = bottom_components,
+                    Name = "",
+                    Padding = UDim.new(0, 4),
+                    SortOrder = Enum.SortOrder.LayoutOrder
+                })
+                -- 
+                    
+                function cfg.set(bool)
+                    icon_2.Visible = bool
+                    glow.Visible = bool
+                    
+                    flags[cfg.flag] = bool
+                    
+                    cfg.callback(bool)
+                end 
+            
+                library:connection(object.MouseButton1Click, function()
+                    cfg.enabled = not cfg.enabled
+            
+                    cfg.set(cfg.enabled)
+                end)
+
+                library:connection(icon_inline.MouseButton1Click, function()
+                    cfg.enabled = not cfg.enabled
+            
+                    cfg.set(cfg.enabled)
+                end)
+
+                cfg.set(cfg.default)
+            
+                self.previous_holder = left_components
+                self.bottom_holder = bottom_components
+                self.right_holder = right_components
+                
+                config_flags[cfg.flag] = cfg.set
+
+                return cfg
             end
 
             function cfg.toggle_playerlist(bool) 
