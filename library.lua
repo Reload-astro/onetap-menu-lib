@@ -2360,7 +2360,6 @@ end
                     flag = properties.flag or tostring(math.random(1,9999999)),
                     callback = properties.callback or function() end,
                     default = properties.default or false,
-                    previous_holder = self
                 }
 
                 local object = library:create("TextButton", {
@@ -2374,7 +2373,6 @@ end
                     BorderSizePixel = 0,
                     BackgroundTransparency = 1,
                     TextXAlignment = Enum.TextXAlignment.Left,
-                    Position = UDim2.new(0, 15, 0, 0),
                     Size = UDim2.new(1, -26, 0, 12),
                     ZIndex = 1,
                     TextSize = 12,
@@ -2403,7 +2401,7 @@ end
                 local icon_inline = library:create("TextButton", {
                     Parent = object,
                     Name = "",
-                    Position = UDim2.new(0, -15, 0, 1),
+                    Position = UDim2.new(0, 0, 0, 1),
                     BorderColor3 = Color3.fromRGB(19, 19, 19),
                     Size = UDim2.new(0, 10, 0, 10),
                     BorderSizePixel = 0,
@@ -2470,7 +2468,7 @@ end
                 })
                 -- 
                     
-                function cfg.set(bool)
+                function cfg.set_toggle(bool)
                     icon_2.Visible = bool
                     glow.Visible = bool
                     
@@ -2482,22 +2480,18 @@ end
                 library:connection(object.MouseButton1Click, function()
                     cfg.enabled = not cfg.enabled
             
-                    cfg.set(cfg.enabled)
+                    cfg.set_toggle(cfg.enabled)
                 end)
 
                 library:connection(icon_inline.MouseButton1Click, function()
                     cfg.enabled = not cfg.enabled
             
-                    cfg.set(cfg.enabled)
+                    cfg.set_toggle(cfg.enabled)
                 end)
 
-                cfg.set(cfg.default)
-            
-                self.previous_holder = left_components
-                self.bottom_holder = bottom_components
-                self.right_holder = right_components
+                cfg.set_toggle(cfg.default)
                 
-                config_flags[cfg.flag] = cfg.set
+                config_flags[cfg.flag] = cfg.set_toggle
 
                 return cfg
             end
