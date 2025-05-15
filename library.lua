@@ -2406,7 +2406,7 @@ end
                 local icon_inline = library:create("TextButton", {
                     Parent = object,
                     Name = "",
-                    Position = UDim2.new(0, 0, 0, 1),
+                    Position = UDim2.new(0, -15, 0, 1),
                     BorderColor3 = Color3.fromRGB(19, 19, 19),
                     Size = UDim2.new(0, 10, 0, 10),
                     BorderSizePixel = 0,
