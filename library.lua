@@ -2339,7 +2339,7 @@ end
 
             function cfg.toggle_playerlist(bool) 
                 playerlist.Visible = bool 
-            end   
+            end
             
             function cfg.toggle_watermark(bool) 
                 __holder.Visible = bool
@@ -5351,9 +5351,9 @@ function library:CreateConfigTab(window)
         window.toggle_list(bool)
     end})
     
-    -- config:toggle({name = "Player List", flag = "player_list", default = false, callback = function(bool)
-        window.toggle_playerlist(false)
-    -- end})
+    config:toggle({name = "Player List", flag = "player_list", default = false, callback = function(bool)
+        window.toggle_playerlist(bool)
+    end})
     
     config:toggle({name = "Watermark", flag = "watermark", default = false, callback = function(bool)
         window.toggle_watermark(bool)
