@@ -14,6 +14,10 @@ local playergui = players.LocalPlayer:FindFirstChild('PlayerGui')
 local tween_service = GetService("TweenService")
 local rs = GetService("ReplicatedStorage")
 
+if startupArgs.coregui then
+    playergui = GetService('CoreGui')
+end
+
 local vec2 = Vector2.new
 local vec3 = Vector3.new
 local dim2 = UDim2.new
